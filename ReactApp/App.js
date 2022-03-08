@@ -6,8 +6,7 @@ import IntroScreen from "./src/screens/IntroScreen";
 import OnboardScreen from "./src/screens/OnboardScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import TestScreen from "./src/screens/TestScreen";
-
-// import IntroScreens from "./app/IntroScreens";
+import LoginScreen from "./src/screens/LoginScreen";
 import React, { useEffect } from "react";
 import AppIntroSlider from "react-native-app-intro-slider";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -17,34 +16,15 @@ import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 
 export default function App() {
-  // const [isFirstLaunched, setIsFirstLaunched] = React.useState(false);
-
-  // useEffect(async () => {
-  //   AsyncStorage.getItem("alreadyLaunched").then((value) => {
-  //     if (value == null) {
-  //       AsyncStorage.setItem("alreadyLaunched", "true");
-  //       setIsFirstLaunched(true);
-  //     } else {
-  //       setIsFirstLaunched(false);
-  //     }
-  //   });
-  // }, []);
-
-    return (
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="OnboardScreen" component={OnboardScreen} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  // if (isFirstLaunched === null) {
-  //   return null;
-  // } else if (isFirstLaunched === true) {
-  //   return <HomeScreen />;
-  // } else {
-  // }
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="OnboardScreen" component={OnboardScreen} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 const styles = StyleSheet.create({
