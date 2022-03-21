@@ -1,10 +1,11 @@
 {
   "expo": {
     "name": "ReactApp",
-    "slug": "ReactApp",
+    "slug": "Learn-English",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "scheme": "com.tung.learnenglish",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -16,17 +17,16 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+          "NSAllowsArbitraryLoads": {
+              "NSAllowsArbitraryLoads": true
+          }
+      }
     },
     "plugins": [
       [
