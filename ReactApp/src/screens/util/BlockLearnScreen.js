@@ -1,10 +1,17 @@
-import { StyleSheet, Text, View, SafeAreaView, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import config from "../../config";
 
 export default function BlockLearnScreen({ title, content }) {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container}>
       <View style={styles.title}>
         <Text style={styles.titleText}>Basic Toeic</Text>
       </View>
@@ -17,7 +24,7 @@ export default function BlockLearnScreen({ title, content }) {
         />
         <Text style={styles.text}>1000 words for reading</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
