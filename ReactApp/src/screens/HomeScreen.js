@@ -1,11 +1,11 @@
+@@ -1,14 +0,0 @@
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import React from 'react'
 
 export default function HomeScreen() {
   return (
     <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
+      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>HomeScreen</Text>
     </SafeAreaView>
   );
