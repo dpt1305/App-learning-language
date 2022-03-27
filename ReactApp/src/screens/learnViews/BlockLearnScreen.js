@@ -13,7 +13,7 @@ export default function BlockLearnScreen({ title, content }) {
   return (
     <TouchableOpacity style={styles.container}>
       <View style={styles.title}>
-        <Text style={styles.titleText}>Basic Toeic</Text>
+        <Text style={styles.titleText}>{title}</Text>
       </View>
       {/* <View style={styles.block}>
       <View/> */}
@@ -22,7 +22,7 @@ export default function BlockLearnScreen({ title, content }) {
           source={require("../../images/icons8-graduation-100.png")}
           style={styles.image}
         />
-        <Text style={styles.text}>1000 words for reading</Text>
+        <Text style={styles.text}>{content}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -31,10 +31,10 @@ export default function BlockLearnScreen({ title, content }) {
 const styles = StyleSheet.create({
   container: {
     width: 350,
-    height: 110,
-    marginTop: 400,
+    height: 90,
     borderRadius: 10,
-    marginLeft: 10,
+    marginBottom: 60,
+    
   },
   titleText: {
     textAlign: "center",
