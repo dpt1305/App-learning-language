@@ -4,9 +4,11 @@ import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import React from "react";
 // screen
 import OverviewScreen from "../screens/OverviewScreen";
-import LearnScreen from "../screens/LearnScreen";
+import LearnScreen from "../screens/learnViews/LearnScreen";
 import LoginScreen from "../screens/LoginScreen";
 import InfoScreen from "../screens/account/InfoScreen";
+// total screen
+import TotalLearnScreen from '../screens/learnViews/TotalLearnScreen';
 // icon
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -15,11 +17,7 @@ export default function Tabs() {
     <Tab.Navigator
       initialRouteName="Overview"
       backBehavior="order"
-      screenOptions={
-        {
-          // tabBarIcon: ()=>{focused: true, color: 'red', size: 12 },
-        }
-      }
+      screenOptions={{ headerShown: false }}
     >
       <Tab.Screen
         name="Overview"
@@ -33,7 +31,7 @@ export default function Tabs() {
       />
       <Tab.Screen
         name="Learn"
-        component={LearnScreen}
+        component={TotalLearnScreen}
         options={{
           tabBarLabel: "Lesson",
           tabBarIcon: ({ color, size }) => (
@@ -43,7 +41,6 @@ export default function Tabs() {
               size={size}
             />
           ),
-
         }}
       />
       <Tab.Screen

@@ -8,10 +8,15 @@ import {
 } from "react-native";
 import React from "react";
 import config from "../../config";
+// import { useNavigation } from "@react-navigation/native";
 
-export default function BlockLearnScreen({ title, content }) {
+export default function BlockLearnScreen({ title, content, navigation }) {
+  // const navigation = useNavigation(); // navigation hook
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity 
+      style={styles.container} 
+      onPress={() => navigation.navigate("BasicToeic", {title})}
+    >
       <View style={styles.title}>
         <Text style={styles.titleText}>{title}</Text>
       </View>
@@ -34,7 +39,10 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 10,
     marginBottom: 60,
-    
+    shadowColor: "rgba(0,0,0, .4)", // IOS
+    shadowOffset: { height: 3, width: 2 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
   },
   titleText: {
     textAlign: "center",

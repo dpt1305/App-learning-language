@@ -1,17 +1,3 @@
-// import { Text, StyleSheet, View, SafeAreaView } from 'react-native'
-// import React, { Component } from 'react'
-
-// export default class LearnScreen extends Component {
-//   render() {
-//     return (
-//       <SafeAreaView>
-//         <Text>LearnScreen</Text>
-//       </SafeAreaView>
-//     );
-//   }
-// }
-
-// const styles = StyleSheet.create({})
 import {
   StyleSheet,
   Text,
@@ -22,7 +8,7 @@ import {
 } from "react-native";
 import React from "react";
 
-import  BlockLearnScreen  from "./BlockLearnScreen";
+import  BlockLearn  from "../util/BlockLearn";
 
 const data = [
   {
@@ -37,7 +23,7 @@ const data = [
   },
   {
     id: 3,
-    title: "Ielts",
+    title: "byhg hjg",
     content: "500 regular words",
   },
   {
@@ -64,13 +50,14 @@ const data = [
 
 
 
-export default function LearnScreen() {
-  const renderItem = ({item})=> <BlockLearnScreen title={item.title} content={item.content} />
+export default function LearnScreen({navigation}) {
+  const renderItem = ({item})=> <BlockLearn title={item.title} content={item.content} navigation={navigation}/>
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} >
       <FlatList
         style={styles.flatList}
         data={data}
+        showsVerticalScrollIndicator={false}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         // horizontal={true}

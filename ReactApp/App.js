@@ -3,13 +3,12 @@ import { StyleSheet, Text, View, SafeAreaView, Image } from "react-native";
 
 // import Tabs from "./src/navigation/Tabs";
 import Tabs from "./src/navigation/Tabs";
-import LearnScreen from "./src/screens/LearnScreen";
+import LearnScreen from "./src/screens/learnViews/LearnScreen";
 import OverviewScreen from "./src/screens/OverviewScreen";
 import React from "react";
 import InfoScreen from "./src/screens/account/InfoScreen";
 import LoginScreen1 from "./src/screens/LoginScreen1";
 import LoginScreen from "./src/screens/LoginScreen";
-import BlockLearn from "./src/screens/util/BlockLearnScreen";
 
 // import * as Google from "expo-google-app-auth";
 import { NavigationContainer } from "@react-navigation/native";
@@ -30,8 +29,8 @@ export default function App() {
         {loginState == 1 ? (
           <Stack.Screen name="Login" component={LoginScreen} />
         ) : (
-          <Stack.Screen name="BlockLearn" component={BlockLearn} />
-          // <Stack.Screen name="Home" component={Tabs} />
+          // <Stack.Screen name="BlockLearn" component={BlockLearn} />
+          <Stack.Screen name="Home" component={Tabs} />
         )}
       </Stack.Navigator>
       {/* <Tabs /> */}
