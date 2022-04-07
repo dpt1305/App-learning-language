@@ -27,7 +27,12 @@ export default function MyStack() {
           },
         })}
       />
-      <Screen name="School" component={SchoolScreen}  />
+
+      <Screen
+        name="School"
+        component={SchoolScreen}
+        options={{ headerShown: false }}
+      />
     </Navigator>
   );
 }

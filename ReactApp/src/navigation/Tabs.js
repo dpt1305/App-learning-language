@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Tab = createBottomTabNavigator();
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, Button } from "react-native";
 import React from "react";
 // screen
 import OverviewScreen from "../screens/OverviewScreen";

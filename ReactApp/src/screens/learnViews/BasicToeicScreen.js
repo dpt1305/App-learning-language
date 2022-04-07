@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
 import React from "react";
 // block for basic toeic
 import BlockBasicToeic from "../util/BlockBasicToeic";
+import SchoolScreen from './SchoolScreen';
 
 const data = [
   {
@@ -30,11 +31,12 @@ const data = [
   },
 ];
 
-export default function BasicToeicScreen({ route }) {
+export default function BasicToeicScreen({ route, navigation }) {
   const renderItem = ({ item }) => (
     <BlockBasicToeic
       id={item.id}
       content={item.content}
+      navigation={navigation}
       // navigation={navigation}
     />
   );

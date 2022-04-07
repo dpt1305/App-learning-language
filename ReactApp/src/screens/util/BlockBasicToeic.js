@@ -10,18 +10,19 @@ import {
 } from "react-native";
 import React from "react";
 import config from "../../config";
-
-export default function BlockBasicToeic({id, content}) {
+//screen
+import SchoolScreen from '../learnViews/SchoolScreen';
+export default function BlockBasicToeic({id, content, navigation}) {
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={(navigation)=>naviagtion.navigate('School')}
+      onPress={() => navigation.navigate("School")}
     >
       <ImageBackground
-        source= {require('../../images/icons8-swastika-55.png')}
+        source={require("../../images/icons8-swastika-55.png")}
         style={styles.image}
       >
-        <Text style={{fontSize: 30}}>{id}</Text>
+        <Text style={{ fontSize: 30 }}>{id}</Text>
       </ImageBackground>
       <Text style={styles.text}>{content}</Text>
     </TouchableOpacity>
