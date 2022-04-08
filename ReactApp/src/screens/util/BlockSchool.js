@@ -93,9 +93,7 @@ export default function BlockSchool() {
           <Text style={styles.meaning}>{meaning}</Text>
         </View>
       </FlipCard>
-      <TouchableOpacity style={({ backgroundColor: "red" }, styles.buttonNext)}>
-        <Text>Next</Text>
-      </TouchableOpacity>
+      
     </SafeAreaView>
   );
 }
