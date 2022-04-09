@@ -9,13 +9,14 @@ import React from "react";
 import InfoScreen from "./src/screens/account/InfoScreen";
 import LoginScreen1 from "./src/screens/LoginScreen1";
 import LoginScreen from "./src/screens/LoginScreen";
-
+import SchoolScreen from './src/screens/learnViews/SchoolScreen';
 // import * as Google from "expo-google-app-auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Stack = createStackNavigator();
+const Stack2 = createStackNavigator();
 // const Tab = createBottomTabNavigator();
 
 // const isLogin = Google.isConnectAsync();
@@ -30,10 +31,23 @@ export default function App() {
           <Stack.Screen name="Login" component={LoginScreen} />
         ) : (
           // <Stack.Screen name="BlockLearn" component={BlockLearn} />
-          <Stack.Screen name="Home" component={Tabs} />
+          <Stack.Group>
+            <Stack.Screen name="Home" component={Tabs} />
+            <Stack.Screen
+              name="School"
+              component={SchoolScreen}
+              // navigation={navigation}
+              options={{
+                headerShown: false,
+                gestureEnabled: false,
+              }}
+            />
+          </Stack.Group>
+
+          // <Stack.Screen name="SchoolScreen" component={SchoolScreen} />
         )}
       </Stack.Navigator>
-      {/* <Tabs /> */}
+      {/* // <Stack2.Screen name="SchoolScreen" component={SchoolScreen} /> */}
     </NavigationContainer>
   );
 }

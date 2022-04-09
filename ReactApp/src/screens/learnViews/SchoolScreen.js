@@ -5,19 +5,28 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
+  TouchableHighlight,
 } from "react-native";
 import React from "react";
 
 import BlockSchool from "../util/BlockSchool";
+import BasicToeic from "../learnViews/BasicToeicScreen";
 
-export default function SchoolScreen() {
+export default function SchoolScreen({navigation}) {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} nagation={{navigation}}>
       <Text>abiasfh</Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Home');
+        }}
+      >
+        <Text>Go Back</Text>
+      </TouchableOpacity>
       <BlockSchool />
       <View style={styles.buttonNextView}>
         <TouchableOpacity style={styles.buttonNext}>
-          <Text style={{fontSize: 34, padding: 20, }}>Next</Text>
+          <Text style={{ fontSize: 34, padding: 20 }}>Next</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

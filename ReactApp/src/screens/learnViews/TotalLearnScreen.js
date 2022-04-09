@@ -28,11 +28,11 @@ export default function MyStack() {
         })}
       />
 
-      <Screen
+      {/* <Screen
         name="School"
         component={SchoolScreen}
-        options={{ headerShown: false }}
-      />
+        options={{ headerShown: false, gestureEnabled: false }}
+      /> */}
     </Navigator>
   );
 }
