@@ -23,7 +23,7 @@ export default function SchoolScreen({navigation}) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const createBackButtonAlert = () =>
-    Alert.alert("Are you sure?", "If you quite, the process will be deleted.", [
+    Alert.alert("Are you sure?", "If you quit, the process will be deleted.", [
       {
         text: "Cancel",
         // onPress: () => console.log("Cancel Pressed"),
@@ -34,30 +34,24 @@ export default function SchoolScreen({navigation}) {
 
   return (
     <SafeAreaView style={styles.container} nagation={{ navigation }}>
-      <View>
+      <View style={styles.topBar}>
         <TouchableOpacity
-          // onPress={() => {
-          //   navigation.navigate("Home");
-          // }}
           onPress={createBackButtonAlert}
           style={{
-            // borderWidth: 1,
             borderRadius: 20,
             maxWidth: 50,
             padding: 5,
-          }}
-        >
+            flex:1,
+          }}>
           <MaterialCommunityIcons
             name="exit-to-app"
             style={{
               fontSize: 40,
-              // width: 60,
               transform: [{ rotate: "180deg" }],
             }}
-            // color={color}
-            // size={size}
           />
         </TouchableOpacity>
+        <Text style={styles.process}>1/10</Text>
       </View>
 
       <BlockSchool setIsFlipped={setIsFlipped} />
@@ -80,7 +74,6 @@ const styles = StyleSheet.create({
   buttonNextView: {
     marginBottom: 10,
     marginTop: 630,
-    // backgroundColor: "red",
     alignItems: "center",
   },
   buttonNextDisable: {
@@ -97,5 +90,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     borderWidth: 1,
+  },
+  topBar: {
+    flexDirection: "row",
+  },
+  process: { 
+    flex: 2,
+    fontSize: 40, 
+    textAlign: 'center', 
+    marginRight: 20,
   },
 });

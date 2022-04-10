@@ -87,7 +87,8 @@ export default function BlockSchool({ setIsFlipped }) {
               />
             </TouchableOpacity>
           </View>
-
+          
+          <Text style={styles.word}>Take</Text>
           <Text style={styles.pronunciation}>/ teik /</Text>
 
           <Text style={styles.meaning}>{meaning}</Text>
@@ -168,12 +169,19 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: 300,
     height: 250,
-
+    textAlign: "center",
+    // fontWeight: "bold",
+  },
+  buttonNext: {
+    marginEnd: 20,
+  },
+  word: {
+    marginLeft: "auto",
+    marginRight: "auto",
+    fontSize: 23,
+    marginTop: 10,
+    width: 300,
     textAlign: "center",
     fontWeight: "bold",
-  },
-  buttonNext:{
-    marginEnd: 20,
-    
   },
 });
