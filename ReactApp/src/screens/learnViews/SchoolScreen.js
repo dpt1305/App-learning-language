@@ -7,12 +7,13 @@ import {
   TouchableOpacity,
   TouchableHighlight,
 } from "react-native";
-import React from "react";
-
+import React, { useState } from "react";
+import config from '../../config';
 import BlockSchool from "../util/BlockSchool";
 import BasicToeic from "../learnViews/BasicToeicScreen";
 
 export default function SchoolScreen({navigation}) {
+  const [isFlipped, setIsFlipped] = useState(false);
   return (
     <SafeAreaView style={styles.container} nagation={{navigation}}>
       <Text>abiasfh</Text>
@@ -23,9 +24,16 @@ export default function SchoolScreen({navigation}) {
       >
         <Text>Go Back</Text>
       </TouchableOpacity>
-      <BlockSchool />
+      <BlockSchool setIsFlipped={setIsFlipped}/>
+      <TouchableOpacity
+        onPress = {()=>{
+          setIsFlipped( true );
+        }}
+      >
+        <Text> Click here for changing.</Text>
+      </TouchableOpacity>
       <View style={styles.buttonNextView}>
-        <TouchableOpacity style={styles.buttonNext}>
+        <TouchableOpacity style={isFlipped ? styles.buttonNext : styles.buttonNextDisable}>
           <Text style={{ fontSize: 34, padding: 20 }}>Next</Text>
         </TouchableOpacity>
       </View>
@@ -43,10 +51,19 @@ const styles = StyleSheet.create({
     // backgroundColor: "red",
     alignItems: "center",
   },
-  buttonNext: {
+  buttonNextDisable: {
     width: 340,
-    backgroundColor: "red",
+    backgroundColor: config.disable,
     borderRadius: 20,
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: config.backgroundColor,
+  },
+  buttonNext: {
+    width: 340,
+    backgroundColor: config.primary,
+    borderRadius: 20,
+    alignItems: "center",
+    borderWidth: 1,
   },
 });

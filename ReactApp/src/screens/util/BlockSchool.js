@@ -29,7 +29,7 @@ async function  playAudio() {
 }
 const meaning: string = 'This is the meaning of Take word. This is lorem for testing, it\'s too long ';
 
-export default function BlockSchool() {
+export default function BlockSchool({ setIsFlipped }) {
   return (
     <SafeAreaView style={styles.container}>
       <FlipCard
@@ -40,8 +40,8 @@ export default function BlockSchool() {
         flipVertical={false}
         flip={false}
         clickable={true}
-        onFlipEnd={(isFlipEnd) => {
-          console.log("isFlipEnd", isFlipEnd);
+        onFlipEnd={() => {
+          setIsFlipped(true);
         }}
       >
         {/* Face Side */}
