@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   TouchableHighlight,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import config from '../../config';
@@ -14,15 +15,31 @@ import BasicToeic from "../learnViews/BasicToeicScreen";
 // icon
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+function generateAlertBack(){
+
+}
+
 export default function SchoolScreen({navigation}) {
   const [isFlipped, setIsFlipped] = useState(false);
+
+  const createBackButtonAlert = () =>
+    Alert.alert("Are you sure?", "If you quite, the process will be deleted.", [
+      {
+        text: "Cancel",
+        // onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => navigation.navigate("Home") },
+    ]);
+
   return (
     <SafeAreaView style={styles.container} nagation={{ navigation }}>
       <View>
         <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Home");
-          }}
+          // onPress={() => {
+          //   navigation.navigate("Home");
+          // }}
+          onPress={createBackButtonAlert}
           style={{
             // borderWidth: 1,
             borderRadius: 20,
