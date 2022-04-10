@@ -24,18 +24,18 @@ export default function SchoolScreen({navigation}) {
             navigation.navigate("Home");
           }}
           style={{
-            borderWidth: 1,
+            // borderWidth: 1,
             borderRadius: 20,
-            maxWidth: 55,
+            maxWidth: 50,
+            padding: 5,
           }}
         >
           <MaterialCommunityIcons
             name="exit-to-app"
             style={{
               fontSize: 40,
-              padding: 5,
-              width: 60,
-              transform: rotate(90),
+              // width: 60,
+              transform: [{ rotate: "180deg" }],
             }}
             // color={color}
             // size={size}
