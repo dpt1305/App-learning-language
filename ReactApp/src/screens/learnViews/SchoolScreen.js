@@ -11,29 +11,44 @@ import React, { useState } from "react";
 import config from '../../config';
 import BlockSchool from "../util/BlockSchool";
 import BasicToeic from "../learnViews/BasicToeicScreen";
+// icon
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function SchoolScreen({navigation}) {
   const [isFlipped, setIsFlipped] = useState(false);
   return (
-    <SafeAreaView style={styles.container} nagation={{navigation}}>
-      <Text>abiasfh</Text>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('Home');
-        }}
-      >
-        <Text>Go Back</Text>
-      </TouchableOpacity>
-      <BlockSchool setIsFlipped={setIsFlipped}/>
-      <TouchableOpacity
-        onPress = {()=>{
-          setIsFlipped( true );
-        }}
-      >
-        <Text> Click here for changing.</Text>
-      </TouchableOpacity>
+    <SafeAreaView style={styles.container} nagation={{ navigation }}>
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+          style={{
+            borderWidth: 1,
+            borderRadius: 20,
+            maxWidth: 55,
+          }}
+        >
+          <MaterialCommunityIcons
+            name="exit-to-app"
+            style={{
+              fontSize: 40,
+              padding: 5,
+              width: 60,
+              transform: rotate(90),
+            }}
+            // color={color}
+            // size={size}
+          />
+        </TouchableOpacity>
+      </View>
+
+      <BlockSchool setIsFlipped={setIsFlipped} />
+
       <View style={styles.buttonNextView}>
-        <TouchableOpacity style={isFlipped ? styles.buttonNext : styles.buttonNextDisable}>
+        <TouchableOpacity
+          style={isFlipped ? styles.buttonNext : styles.buttonNextDisable}
+        >
           <Text style={{ fontSize: 34, padding: 20 }}>Next</Text>
         </TouchableOpacity>
       </View>
