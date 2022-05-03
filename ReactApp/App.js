@@ -10,6 +10,8 @@ import InfoScreen from "./src/screens/account/InfoScreen";
 import LoginScreen1 from "./src/screens/LoginScreen1";
 import LoginScreen from "./src/screens/LoginScreen";
 import SchoolScreen from './src/screens/learnViews/SchoolScreen';
+import TypeScreen from './src/screens/learnViews/TypeScreen';
+import ListenScreen from './src/screens/learnViews/ListenScreen';
 // import * as Google from "expo-google-app-auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -42,7 +44,18 @@ export default function App() {
                 gestureEnabled: false,
               }}
             />
+            <Stack.Screen 
+              name="Type"
+              component={TypeScreen}
+            />
+            <Stack.Screen 
+              name="Listen"
+              component={ListenScreen}
+            />
           </Stack.Group>
+
+          // maybe we can move on between group by navigation. 
+          // This is an IDEA DON"T DELETE it.
 
           // <Stack.Screen name="SchoolScreen" component={SchoolScreen} />
         )}

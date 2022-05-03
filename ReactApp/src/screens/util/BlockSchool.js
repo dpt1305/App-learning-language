@@ -17,10 +17,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 //audio 
 import { Audio } from "expo-av";
-// import Sound from 'react-native-sound';
-// const audio = new Sound('./take_us_1.mp3', Sound.MAIN_BUNDLE);
 async function  playAudio() {
-  // uri = "./take_us_1.mp3";
   const { sound } = await Audio.Sound.createAsync(
        require('./take_us_1.mp3')
   );

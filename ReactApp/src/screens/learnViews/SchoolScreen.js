@@ -41,8 +41,9 @@ export default function SchoolScreen({navigation}) {
             borderRadius: 20,
             maxWidth: 50,
             padding: 5,
-            flex:1,
-          }}>
+            flex: 1,
+          }}
+        >
           <MaterialCommunityIcons
             name="exit-to-app"
             style={{
@@ -59,6 +60,8 @@ export default function SchoolScreen({navigation}) {
       <View style={styles.buttonNextView}>
         <TouchableOpacity
           style={isFlipped ? styles.buttonNext : styles.buttonNextDisable}
+          onPress={() => navigation.navigate("Listen")}
+          disabled={!isFlipped}
         >
           <Text style={{ fontSize: 34, padding: 20 }}>Next</Text>
         </TouchableOpacity>

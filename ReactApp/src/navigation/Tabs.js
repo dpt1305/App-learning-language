@@ -1,5 +1,7 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-const Tab = createBottomTabNavigator();
+// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import config from '../config';
+const Tab = createMaterialBottomTabNavigator();
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, Button } from "react-native";
 import React from "react";
 // screen
@@ -18,16 +20,23 @@ export default function Tabs() {
       initialRouteName="Overview"
       backBehavior="order"
       screenOptions={{ headerShown: false }}
+      shifting={true}
+      activeColor="#f0edf6"
+      inactiveColor="#3e2465"
+      // barStyle={{ paddingBottom: 10 }}
     >
       <Tab.Screen
         name="Overview"
         component={OverviewScreen}
+        // tabBarColor={{'#3e2465'}}
         options={{
           tabBarLabel: "Overview",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <MaterialCommunityIcons name="home" color={color} size={30} />
           ),
+          tabBarColor: config.primary,
         }}
+        title={{ size: 30 }}
       />
       <Tab.Screen
         name="Learn"
@@ -38,9 +47,10 @@ export default function Tabs() {
             <MaterialCommunityIcons
               name="book-open-variant"
               color={color}
-              size={size}
+              size={30}
             />
           ),
+          tabBarColor: "lightpink",
         }}
       />
       <Tab.Screen
@@ -49,10 +59,22 @@ export default function Tabs() {
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="account"
+              color={color}
+              size={30}
+              style={styles.icon}
+            />
           ),
+          tabBarColor: "orange",
         }}
       />
     </Tab.Navigator>
   );
 }
+const styles = StyleSheet.create({
+  icon: {
+    color: '#3e2465',
+    
+  }
+})

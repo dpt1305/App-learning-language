@@ -8,38 +8,46 @@ const data = [
   {
     id: 1,
     content: "School",
+    done: true,
   },
   {
     id: 2,
     content: "Student",
+    done: true,
   },
   {
     id: 3,
-    content: "Class",
+    content: "Furniture",
+    done: false,
   },
   {
     id: 4,
-    content: "Class",
+    content: "Car",
+    done: false,
   },
   {
     id: 5,
-    content: "Class",
+    content: "Sport",
+    done: false,
   },
   {
     id: 6,
     content: "Class",
+    done: false,
   },
 ];
 
 export default function BasicToeicScreen({ route, navigation }) {
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }) => {
+    return (
     <BlockBasicToeic
       id={item.id}
       content={item.content}
       navigation={navigation}
+      done = {item.done}
       // navigation={navigation}
     />
-  );
+  )};
 
   return (
     <SafeAreaView style={styles.container}>
