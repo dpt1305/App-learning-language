@@ -12,6 +12,7 @@ import React from "react";
 import config from "../../config";
 //screen
 import SchoolScreen from '../learnViews/SchoolScreen';
+import CombinedScreen from '../learnViews/CombinedScreen';
 // icon
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -27,7 +28,7 @@ export default function BlockBasicToeic({id, content, navigation, done}) {
     <TouchableOpacity
       style={style}
       disabled={done}
-      onPress={() => navigation.navigate("School")}
+      onPress={() => navigation.navigate("Combined")}
     >
       <ImageBackground
         source={require("../../images/icons8-swastika-55.png")}

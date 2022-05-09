@@ -6,17 +6,25 @@ import {
   TouchableOpacity,
 } from "react-native";
 import * as React from 'react';
-import { Audio } from "expo-av";
 import config from '../../config';
 import FormData from 'form-data';
 import * as FileSystem from "expo-file-system";
 import axios from "axios";
 //icon
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
-export default function BlockListen({ setIsFullFilled }) {
+//audio 
+import { Audio } from "expo-av";
+async function  playAudio() {
+  const { sound } = await Audio.Sound.createAsync(
+       require('../../audio/take_us_1.mp3')
+  );
+  console.log('Playing');
+  await sound.playAsync(); 
+}
+export default function BlockListen() {
   const [recording, setRecording] = React.useState();
   const [uriRecording, setUriRecording] = React.useState(null);
+  const [percent, setPercent] = React.useState(null);
 
   async function startRecording() {
     try {
@@ -53,7 +61,7 @@ export default function BlockListen({ setIsFullFilled }) {
         // Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
       );
       setRecording(recording);
-      setIsFullFilled(false);
+
 
       console.log("Recording started");
     } catch (err) {
@@ -66,12 +74,12 @@ export default function BlockListen({ setIsFullFilled }) {
 
     console.log("Stopping recording..");
     setRecording(undefined);
-    setIsFullFilled(true);
     await recording.stopAndUnloadAsync(source);
     const uri = recording.getURI();
     setUriRecording(uri);
 
-    await sendAudioToServer(uri);
+    const result = await sendAudioToServer(uri);
+    // console.log(result);
   }
   async function sendAudioToServer(uri) {
     const fileName = uri.split("/").pop();
@@ -91,35 +99,72 @@ export default function BlockListen({ setIsFullFilled }) {
       },
     };
 
-    let response = await fetch("http://104.194.240.80:3000/uploadfile", options);
+    let response = fetch("http://104.194.240.80:3000/uploadfile", options)
+      .then( res => console.log('111', res ));
     // console.log(response);
+    return response;
   }
   async function playBack() {
     await recording.createNewLoadedSoundAsync();
   }
 
   return (
-    <View>
-      <TouchableOpacity
-        onPress={recording ? stopRecording : startRecording}
-        style={recording ? styles.disableListening : styles.listening}
-      >
-        <MaterialCommunityIcons name="microphone" size={125} />
-      </TouchableOpacity>
-      <Text
-        style={{
-          fontSize: 35,
-          textAlign: "center",
-          marginTop: 10,
-        }}
-      >
-        80%
-      </Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>Pronounce correctly</Text>
+      <View style={styles.pronounce}>
+        <Text style={{ fontSize: 25 }}>commercial{"\n"}/ kem ‘mer s3l / </Text>
+        <TouchableOpacity onPress={playAudio} style={styles.button}>
+          <MaterialCommunityIcons name="volume-high" style={styles.speaker} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.listenButton}>
+
+        <TouchableOpacity
+          onPress={recording ? stopRecording : startRecording}
+          style={recording ? styles.disableListening : styles.listening}
+        >
+          <MaterialCommunityIcons name="microphone" size={125} />
+        </TouchableOpacity>
+        <Text
+          style={styles.percent}
+        >
+          {percent}
+        </Text>
+
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: "column",
+    flex: 1,
+  },
+  title: {
+    flex: 1,
+    fontSize: 20,
+    textAlign: "center",
+  },
+  pronounce: {
+    flex: 2,
+    fontSize: 30,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  listenButton: {
+    flex: 7,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  speaker: {
+    fontSize: 50,
+    height: "auto",
+    borderColor: "black",
+    borderRadius: 25,
+    borderWidth: 1,
+  },
   disableListening: {
     width: 200,
     height: 200,
@@ -143,5 +188,10 @@ const styles = StyleSheet.create({
     shadowOffset: { height: 3, width: 2 }, // IOS
     shadowOpacity: 2, // IOS
     shadowRadius: 2, //IOS
+  },
+  percent: {
+    fontSize: 35,
+    textAlign: "center",
+    marginTop: 10,
   },
 });

@@ -9,14 +9,18 @@ import {
   Keyboard,
   ScrollView,
   KeyboardAvoidingView,
+  Modal,
+  Button,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import config from "../../config";
 // icon
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-export default function TypeScreen({ navigation }) {
-  const [isFullFilled, setIsFullFilled] = useState(false);
+export default function BlockType(props) {
+  // const [isFullFilled, setIsFullFilled] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+
   const word = {
     word: 'take',
     length: 4,
@@ -34,65 +38,49 @@ export default function TypeScreen({ navigation }) {
   const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
   
   return (
-    // <KeyboardAvoidingView
-    //   behavior={Platform.OS === "ios" ? "padding" : "height"}
-    //   // keyboardVerticalOffset='40'
-    // >
-
     <SafeAreaView style={styles.container}>
-      <View style={styles.topBar}>
-        <TouchableOpacity
-          onPress={createBackButtonAlert}
-          style={{
-            borderRadius: 20,
-            maxWidth: 50,
-            padding: 5,
-            flex: 1,
-          }}
-        >
-          <MaterialCommunityIcons
-            name="exit-to-app"
-            style={{
-              fontSize: 40,
-              transform: [{ rotate: "180deg" }],
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.process}>1/10</Text>
-      </View>
-
       <Text style={styles.header}>Please fill in the word</Text>
-      <Text style={styles.meaning}>
-        This is the meaning of word. It may be so long, like this,
-      </Text>
+      <Text style={styles.meaning}>{props.word.meaning}</Text>
       {/* <ScrollView style={{flex: 5}}> */}
       <View style={styles.textInput}>
         <TextInput
           editable
-          // maxLength={2}
+          maxLength={props.word.length}
           style={styles.input}
           isFocused="true"
-          placeholder="_"
+          placeholder={props.word.placeholder}
           keyboardType="default"
           // onSubmitEditing={Keyboard.dismiss}
-          onPress={Keyboard.dismiss}
+          // onPress={Keyboard.dismiss}
+          onChangeText={(textInput) => {
+            if (textInput.length == props.word.length) {
+              props.setDisableButton(false);
+              props.setTypeWord({ textInput: textInput.toLowerCase() });
+            } else props.setDisableButton(true);
+          }}
         />
       </View>
+      <Button title="abc" onPress={() => setModalVisible(!modalVisible)} />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <SafeAreaView>
+          <Text>This is modal</Text>
+
+        </SafeAreaView>
+      </Modal>
       {/* </ScrollView> */}
 
-      <View style={styles.buttonNextView}>
-        <TouchableOpacity
-          style={isFullFilled ? styles.buttonNext : styles.buttonNextDisable}
-          onPress={() => navigation.navigate("Type")}
-          disabled={!isFullFilled}
-        >
-          <Text style={{ fontSize: 34, padding: 20 }}>Next</Text>
-        </TouchableOpacity>
-      </View>
-      <KeyboardAvoidingView
+      {/* <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        // keyboardVerticalOffset="10"
-      ></KeyboardAvoidingView>
+        keyboardVerticalOffset="10"
+      ></KeyboardAvoidingView> */}
     </SafeAreaView>
   );
 }
@@ -108,7 +96,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 0.6,
-    fontSize: 25,
+    fontSize: 20,
     textAlign: "center",
   },
   meaning: {
@@ -121,8 +109,8 @@ const styles = StyleSheet.create({
   },
   buttonNextView: {
     flex: 1.8,
-    marginBottom: 10,
-    // marginTop: 'auto',
+    marginBottom: 50,
+    // marginBottom: 'auto',
     alignItems: "center",
   },
   buttonNextDisable: {

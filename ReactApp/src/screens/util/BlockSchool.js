@@ -8,7 +8,7 @@ import {
   Image,
   Button,
 } from "react-native";
-import React from 'react'
+import React, { useState } from 'react'
 import config from '../../config';
 // flip card
 import FlipCard from "react-native-flip-card";
@@ -26,7 +26,8 @@ async function  playAudio() {
 }
 const meaning: string = 'This is the meaning of Take word. This is lorem for testing, it\'s too long ';
 
-export default function BlockSchool({ setIsFlipped }) {
+export default function BlockSchool(props) {
+  const [ isFlipped, setIsFlipped ] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
       <FlipCard
@@ -39,6 +40,7 @@ export default function BlockSchool({ setIsFlipped }) {
         clickable={true}
         onFlipEnd={() => {
           setIsFlipped(true);
+          props.setDisableButton(false);
         }}
       >
         {/* Face Side */}

@@ -5,7 +5,7 @@ const Tab = createMaterialBottomTabNavigator();
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, Button } from "react-native";
 import React from "react";
 // screen
-import OverviewScreen from "../screens/OverviewScreen";
+import OverviewScreen from "../screens/overview/OverviewScreen";
 import LearnScreen from "../screens/learnViews/LearnScreen";
 import LoginScreen from "../screens/LoginScreen";
 import InfoScreen from "../screens/account/InfoScreen";
