@@ -1,0 +1,157 @@
+import { BarChart } from "react-native-chart-kit";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
+import React, { useState } from "react";
+import { Dimensions } from "react-native";
+import CountDown from "react-native-countdown-component";
+// configg
+import config from "../../config";
+const data = {
+  labels: ["1", "2", "3", "4", "5"],
+  datasets: [
+    {
+      data: [22, 30, 28, 30, 55],
+    },
+  ],
+};
+
+export default function OverviewScreen() {
+  const [countDone, setCountDone] = useState(false);
+  const { width, height } = Dimensions.get("window");
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.chartView}>
+        <Text
+          style={{
+            fontSize: 30,
+            textAlign: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            flex: 2,
+            marginTop: 20,
+          }}
+        >
+          Overview Dashboard
+        </Text>
+        <BarChart
+          style={{
+            borderColor: config.primary,
+            borderWidth: 3,
+            textAlign: "center",
+            paddingRight: 10,
+            borderRadius: 20,
+            marginRight: 2,
+            marginLeft: 1,
+          }}
+          data={data}
+          width={width * 0.95}
+          height={300}
+          // yAxisLabel="$"
+          chartConfig={{
+            backgroundColor: "#e26a00",
+            backgroundGradientFrom: config.backgroundColor,
+            backgroundGradientTo: "white",
+            decimalPlaces: 0, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(10, 0, 10, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(10, 0, 10, ${opacity})`,
+            style: {
+              // borderRadius: 16,
+              flex: 5,
+              fontSize: 30,
+            },
+            fillShadowGradientFromOpacity: 0.5,
+          }}
+          bezier
+          // style={styles.chart}
+          showValuesOnTopOfBars={true}
+          withHorizontalLabels={false}
+          withInnerLines={false}
+          fromZero={true}
+        />
+      </View>
+
+      <View style={styles.countdown}>
+        <CountDown
+          size={30}
+          until={36}
+          onFinish={() => setCountDone(true)}
+          digitStyle={{
+            backgroundColor: "#FFF",
+            borderWidth: 4,
+            borderColor: config.primary,
+          }}
+          digitTxtStyle={{ color: config.secondary }}
+          timeLabelStyle={{ color: "red", fontWeight: "bold" }}
+          separatorStyle={{ color: config.secondary }}
+          timeToShow={["H", "M", "S"]}
+          timeLabels={{ m: null, s: null }}
+          showSeparator
+        />
+      </View>
+
+      <View style={styles.buttonNextView}>
+        <TouchableOpacity
+          style={!countDone ? styles.buttonNext : styles.buttonNextDisable}
+          onPress={() => navigation.navigate("Type")}
+          disabled={countDone}
+        >
+          <Text style={{ fontSize: 34, padding: 20 }}>Review 10 words...</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column",
+  },
+  chartView: {
+    flex: 3,
+  },
+  chart: {
+    marginTop: 10,
+    borderRadius: 20,
+    flex: 7,
+    borderColor: "red",
+    borderWidth: 1,
+  },
+  countdown: {
+    flex: 1,
+    marginTop: 15,
+  },
+  review: {
+    flex: 1,
+  },
+  buttonNextView: {
+    flex: 1,
+    marginBottom: 10,
+    // marginTop: 'auto',
+    alignItems: "center",
+  },
+  charConfig: {
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    // labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+  },
+  buttonNextDisable: {
+    width: 340,
+    backgroundColor: config.disable,
+    borderRadius: 20,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: config.backgroundColor,
+  },
+  buttonNext: {
+    width: 340,
+    backgroundColor: config.primary,
+    borderRadius: 20,
+    alignItems: "center",
+    borderWidth: 1,
+  },
+});
