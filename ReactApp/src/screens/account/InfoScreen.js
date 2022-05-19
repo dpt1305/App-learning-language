@@ -9,6 +9,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
+import * as SecureStore from "expo-secure-store";
+import { useDispatch } from "react-redux";
+import userSlice from "../../redux/user.slice";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const user = {
   email: "tungplatin@gmail.com",
@@ -22,6 +26,7 @@ const user = {
 export default function InfoScreen() {
   const [isEnabled, setIsEnabled] = React.useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const dispatch = useDispatch();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,7 +57,14 @@ export default function InfoScreen() {
         </View>
       </View>
 
-      <TouchableOpacity onPress={{}} style={styles.logoutButton}>
+      <TouchableOpacity 
+        onPress={async ()=> {
+            await AsyncStorage.setItem('acc_token', "");
+            dispatch(userSlice.actions.changeLoginState())
+          } 
+        } 
+        style={styles.logoutButton}
+      >
         <Text
           style={{
             fontSize: 18,

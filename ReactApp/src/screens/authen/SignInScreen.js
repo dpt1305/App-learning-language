@@ -7,50 +7,33 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+  AsyncStorageStatic,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import React, { useState } from 'react'
 import config from '../../config';
 import axios from 'axios';
-
-async function sendLogin(email: string, password: string) {
-
-
-  const formData = new FormData();
-  formData.append('email', email);
-  formData.append('password', password);
-
-  const options = {
-    method: "POST",
-    body: formData,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "multipart/form-data",
-      // Authorization: `Token ${Token}`,
-    },
-  };
-  // console.log(formData);
-
-  let res = fetch("http://localhost:3000/auth/signin", options)
-  .then(
-    async (data) => {
-      console.log(11111111111, data );
-      // await SecureStore.setItemAsync('jwt', res);
-      // const check = await SecureStore.getItemAsync('jwt');
-      // console.log(check);
-      // return dat.json();
-    }
-  )
-  // .then( data => console.log(data.jwt));
-
-  // console.log(res);
-}
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Constants } from "../../Constants";
+import { useDispatch } from 'react-redux';
+import userSlice from "../../redux/user.slice";
 
 const window = Dimensions.get('window');
+
+async function loginUser(email, password) {
+  const url = `${Constants.URL_SERVER}auth/signin`;
+
+  const data = {email: email.toLowerCase(), password};
+  return await axios.post(url, data);
+}
+
+
 export default function SignInScreen(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+  const dispatch = useDispatch();
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.welcome}>
@@ -75,7 +58,7 @@ export default function SignInScreen(props) {
           keyboardType="default"
           placeholder="Password"
           secureTextEntry={true}
-          onChangeText={(text) => setPassword(text)}
+          onChangeText={(text) => {setPassword(text); console.log(text)}}
         />
         <TouchableOpacity>
           <Text style={{ fontSize: 20, color: config.primary }}>
@@ -85,9 +68,15 @@ export default function SignInScreen(props) {
       </View>
 
       <View style={styles.viewButton}>
-        <TouchableOpacity 
-          onPress={()=>sendLogin(email, password)}
+        <TouchableOpacity
           style={styles.signinButton}
+          onPress={async () => { 
+            const res = await loginUser(email, password);
+            if(res.data.message == 'Success') {
+              await AsyncStorage.setItem('acc_token', res.data.data.toString());
+              dispatch(userSlice.actions.changeLoginState())
+            }
+          }}
         >
           <Text
             style={{
@@ -107,11 +96,6 @@ export default function SignInScreen(props) {
           </Text>
         </TouchableOpacity>
       </View>
-
-      {/* <Button
-        title="click me"
-        onPress={() => props.navigation.navigate("SignUp")}
-      /> */}
     </SafeAreaView>
   );
 }

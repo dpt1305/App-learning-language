@@ -60,8 +60,8 @@ export default function BlockType(props) {
           }}
         />
       </View>
-      <Button title="abc" onPress={() => setModalVisible(!modalVisible)} />
-      <Modal
+      {/* <Button title="abc" onPress={() => setModalVisible(!modalVisible)} /> */}
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -74,7 +74,7 @@ export default function BlockType(props) {
           <Text>This is modal</Text>
 
         </SafeAreaView>
-      </Modal>
+      </Modal> */}
       {/* </ScrollView> */}
 
       {/* <KeyboardAvoidingView

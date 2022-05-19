@@ -8,12 +8,15 @@ import {
 import * as React from 'react';
 import config from '../../config';
 import FormData from 'form-data';
-import * as FileSystem from "expo-file-system";
+import { Constants } from "../../Constants";
 import axios from "axios";
 //icon
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 //audio 
 import { Audio } from "expo-av";
+// compare string
+import * as stringSimilarity from "string-similarity";
+
 async function  playAudio() {
   const { sound } = await Audio.Sound.createAsync(
        require('../../audio/take_us_1.mp3')
@@ -21,7 +24,7 @@ async function  playAudio() {
   console.log('Playing');
   await sound.playAsync(); 
 }
-export default function BlockListen() {
+export default function BlockListen(props) {
   const [recording, setRecording] = React.useState();
   const [uriRecording, setUriRecording] = React.useState(null);
   const [percent, setPercent] = React.useState(null);
@@ -79,7 +82,10 @@ export default function BlockListen() {
     setUriRecording(uri);
 
     const result = await sendAudioToServer(uri);
-    // console.log(result);
+    
+    // const similarity = stringSimilarity.compareTwoStrings(result, props.word);
+    // console.log(similarity);
+    // await setPercent(similarity);
   }
   async function sendAudioToServer(uri) {
     const fileName = uri.split("/").pop();
@@ -99,20 +105,20 @@ export default function BlockListen() {
       },
     };
 
-    let response = fetch("http://104.194.240.80:3000/uploadfile", options)
-      .then( res => console.log('111', res ));
-    // console.log(response);
+    let response = await fetch(Constants.URL_VPS, options);
+      // .then( res => console.log('111', res ));
+    console.log(response);
     return response;
   }
   async function playBack() {
     await recording.createNewLoadedSoundAsync();
   }
-
+  //# render screen
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Pronounce correctly</Text>
       <View style={styles.pronounce}>
-        <Text style={{ fontSize: 25 }}>commercial{"\n"}/ kem ‘mer s3l / </Text>
+        <Text style={{ fontSize: 25 }}>{props.word.word}{"\n"} {props.word.pronunciation} </Text>
         <TouchableOpacity onPress={playAudio} style={styles.button}>
           <MaterialCommunityIcons name="volume-high" style={styles.speaker} />
         </TouchableOpacity>

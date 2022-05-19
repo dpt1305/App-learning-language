@@ -31,7 +31,7 @@ const newWord = {
 function RenderBlock(props) {
 
   if (props.state % 3 == 0)
-    return <BlockSchool setDisableButton={props.setDisableButton} />;
+    return <BlockSchool setDisableButton={props.setDisableButton} word={props.word} />;
   if (props.state % 3 == 1)
     return (
       <BlockType
@@ -40,7 +40,7 @@ function RenderBlock(props) {
         setTypeWord={props.setTypeWord}
       />
     );
-  else return <BlockListen />;
+  else return <BlockListen word={props.word}/>;
 }
 
 export default function CombinedScreen({ navigation }) {

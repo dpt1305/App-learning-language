@@ -78,7 +78,7 @@ export default function OverviewScreen() {
       <View style={styles.countdown}>
         <CountDown
           size={30}
-          until={10}
+          until={36}
           onFinish={() => setCountDone(true)}
           digitStyle={{
             backgroundColor: "#FFF",
@@ -96,9 +96,9 @@ export default function OverviewScreen() {
 
       <View style={styles.buttonNextView}>
         <TouchableOpacity
-          style={countDone ? styles.buttonNext : styles.buttonNextDisable}
+          style={!countDone ? styles.buttonNext : styles.buttonNextDisable}
           onPress={() => navigation.navigate("Type")}
-          disabled={!countDone}
+          disabled={countDone}
         >
           <Text style={{ fontSize: 34, padding: 20 }}>Review 10 words...</Text>
         </TouchableOpacity>

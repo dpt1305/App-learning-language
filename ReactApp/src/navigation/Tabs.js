@@ -14,7 +14,7 @@ import TotalLearnScreen from '../screens/learnViews/TotalLearnScreen';
 // icon
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-export default function Tabs() {
+export default function Tabs(props) {
   return (
     <Tab.Navigator
       initialRouteName="Overview"

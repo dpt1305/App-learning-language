@@ -67,7 +67,7 @@ export default function BlockSchool(props) {
               uri: "https://globalsymbols.com/uploads/production/image/imagefile/46378/17_46379_0591077c-0cdc-485e-b280-912e26623824.png",
             }}
           />
-          <Text style={styles.meaning}>{meaning}</Text>
+          <Text style={styles.meaning}>{props.word.meaning}</Text>
         </View>
 
         {/* Back Side */}
@@ -87,10 +87,10 @@ export default function BlockSchool(props) {
             </TouchableOpacity>
           </View>
           
-          <Text style={styles.word}>Take</Text>
-          <Text style={styles.pronunciation}>/ teik /</Text>
+          <Text style={styles.word}>{props.word.word}</Text>
+          <Text style={styles.pronunciation}>{props.word.pronunciation}</Text>
 
-          <Text style={styles.meaning}>{meaning}</Text>
+          <Text style={styles.meaning}>{props.word.meaning}</Text>
         </View>
       </FlipCard>
       
