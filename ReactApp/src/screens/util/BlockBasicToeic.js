@@ -15,8 +15,25 @@ import SchoolScreen from '../learnViews/SchoolScreen';
 import CombinedScreen from '../learnViews/CombinedScreen';
 // icon
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useDispatch } from "react-redux";
+import dataSlice from "../../redux/data.slice";
+import { Constants } from "../../Constants";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from "axios";
 
-export default function BlockBasicToeic({id, content, navigation, done}) {
+async function getWords(id) {
+  const url = `${Constants.URL_SERVER}words/${id}`;
+  const jwt = await  AsyncStorage.getItem('acc_token');
+  let config = {
+    headers: {
+       Authorization: "Bearer " + jwt,
+    }
+  };
+  return await (await axios.get(url, config)).data.data;
+}
+
+export default function BlockBasicToeic({id, content, navigation, done, lessonId}) {
+  const dispatch = useDispatch();
   let tick = done ? <MaterialCommunityIcons
             name="check"
             style={{
@@ -28,7 +45,11 @@ export default function BlockBasicToeic({id, content, navigation, done}) {
     <TouchableOpacity
       style={style}
       disabled={done}
-      onPress={() => navigation.navigate("Combined")}
+      onPress={async () => {
+        const words = await getWords(lessonId);
+        dispatch(dataSlice.actions.addWords(words));
+        navigation.navigate("Combined", words);
+      }}
     >
       <ImageBackground
         source={require("../../images/icons8-swastika-55.png")}

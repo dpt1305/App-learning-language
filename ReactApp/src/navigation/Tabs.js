@@ -50,7 +50,7 @@ export default function Tabs(props) {
               size={30}
             />
           ),
-          tabBarColor: "lightpink",
+          tabBarColor: "orange",
         }}
       />
       <Tab.Screen
@@ -66,7 +66,7 @@ export default function Tabs(props) {
               style={styles.icon}
             />
           ),
-          tabBarColor: "orange",
+          tabBarColor: "lightpink",
         }}
       />
     </Tab.Navigator>

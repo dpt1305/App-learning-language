@@ -16,6 +16,9 @@ import BlockType from "../util/BlockType";
 import BlockTopBar from "../util/BlockTopBar";
 //import config
 import config from "../../config";
+import { useDispatch, useSelector } from "react-redux";
+import { buttonStateSelector, countSelector, indexWord, indexWordSelector } from "../../redux/selector";
+import dataSlice from "../../redux/data.slice";
 
 const newWord = {
   word: "student",
@@ -43,19 +46,24 @@ function RenderBlock(props) {
   else return <BlockListen word={props.word}/>;
 }
 
-export default function CombinedScreen({ navigation }) {
+export default function CombinedScreen(props) {
+  const words =  props.route.params.words;
   const [count, setCount] = useState(0);
   const [disableButton, setDisableButton] = useState(true);
   const [typeWord, setTypeWord] = useState({ textInput: ""});
 
+  const dispatch = useDispatch();
+  const buttonState= useSelector(buttonStateSelector);
+  const count1 = useSelector(countSelector);
+  const indexWord = useSelector(indexWordSelector);
   return (
     <SafeAreaView style={styles.container}>
-      <BlockTopBar style={styles.topBar} navigation={navigation} />
+      <BlockTopBar style={styles.topBar} navigation={props.navigation} />
 
       <View style={styles.viewBlock}>
         <RenderBlock
           setDisableButton={setDisableButton}
-          state={count}
+          state={count1}
           word={newWord}
           setTypeWord={setTypeWord}
         />
@@ -63,8 +71,8 @@ export default function CombinedScreen({ navigation }) {
 
       <View style={styles.buttonNextView}>
         <TouchableOpacity
-          style={disableButton ? styles.buttonNextDisable : styles.buttonNext}
-          disabled={disableButton}
+          style={!buttonState ? styles.buttonNextDisable : styles.buttonNext}
+          disabled={!buttonState}
           onPress={() => {
             if(count%3 == 1 && typeWord.textInput == newWord.word){
               Alert.alert(
@@ -89,8 +97,9 @@ export default function CombinedScreen({ navigation }) {
               ]);
             }
             else {
-              setCount(count + 1);
-              setDisableButton(true);
+              dispatch(dataSlice.actions.addCount());
+              dispatch(dataSlice.actions.switchButtonState(false));
+
             }
           }}
         >

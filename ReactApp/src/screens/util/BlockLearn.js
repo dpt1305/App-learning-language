@@ -8,13 +8,33 @@ import {
 } from "react-native";
 import React from "react";
 import config from "../../config";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Constants } from "../../Constants";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import dataSlice from './../../redux/data.slice';
+
+async function getLessons(id) {
+  const url = `${Constants.URL_SERVER}lessons/${id}`;
+  const jwt = await  AsyncStorage.getItem('acc_token');
+  let config = {
+    headers: {
+       Authorization: "Bearer " + jwt,
+    }
+  };
+  return  (await axios.get(url, config)).data.data;
+}
 
 export default function BlockLearnScreen({ title, content, navigation, id }) {
-  
+  const dispatch = useDispatch();
   return (
     <TouchableOpacity 
       style={styles.container} 
-      onPress={() => navigation.navigate("BasicToeic", {title})}
+      onPress={async () => {
+        const lessons = await getLessons(id);
+        dispatch(dataSlice.actions.addLessons(lessons));
+        navigation.navigate("BasicToeic", {title});
+      }}
     >
       <View style={styles.title}>
         <Text style={styles.titleText}>{title}</Text>

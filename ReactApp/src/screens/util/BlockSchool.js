@@ -17,6 +17,9 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 //audio 
 import { Audio } from "expo-av";
+import { useDispatch, useSelector } from "react-redux";
+import { buttonStateSelector } from "../../redux/selector";
+import dataSlice from "../../redux/data.slice";
 async function  playAudio() {
   const { sound } = await Audio.Sound.createAsync(
        require('./take_us_1.mp3')
@@ -28,6 +31,8 @@ const meaning: string = 'This is the meaning of Take word. This is lorem for tes
 
 export default function BlockSchool(props) {
   const [ isFlipped, setIsFlipped ] = useState(false);
+  const dispatch = useDispatch();
+  
   return (
     <SafeAreaView style={styles.container}>
       <FlipCard
@@ -40,7 +45,7 @@ export default function BlockSchool(props) {
         clickable={true}
         onFlipEnd={() => {
           setIsFlipped(true);
-          props.setDisableButton(false);
+          if(!isFlipped) { dispatch(dataSlice.actions.switchButtonState(true))}
         }}
       >
         {/* Face Side */}

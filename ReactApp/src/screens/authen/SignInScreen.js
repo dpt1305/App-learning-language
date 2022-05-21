@@ -12,7 +12,7 @@ import {
 import * as SecureStore from "expo-secure-store";
 import React, { useState } from 'react'
 import config from '../../config';
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Constants } from "../../Constants";
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,7 +38,7 @@ async function getCourses() {
        Authorization: "Bearer " + jwt,
     }
   };
-  return await (await axios.get(url, config)).data.data;
+  return (await axios.get(url, config)).data.data;
 }
 
 export default function SignInScreen(props) {
@@ -87,7 +87,7 @@ export default function SignInScreen(props) {
             if(res.data.message == 'Success') {
               await AsyncStorage.setItem('acc_token', res.data.data.toString());
               let courses = await getCourses();
-              
+              console.log(courses);
               dispatch(userSlice.actions.changeLoginState());
               dispatch(dataSlice.actions.addCourses(courses));
             }
