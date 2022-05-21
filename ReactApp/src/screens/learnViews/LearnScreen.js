@@ -9,54 +9,17 @@ import {
 import React from "react";
 
 import  BlockLearn  from "../util/BlockLearn";
-
-const data = [
-  {
-    id: 1,
-    title: "Basic Toeic",
-    content: "1000 regular words",
-  },
-  {
-    id: 2,
-    title: "Ielts",
-    content: "500 regular words",
-  },
-  {
-    id: 3,
-    title: "byhg hjg",
-    content: "500 regular words",
-  },
-  {
-    id: 4,
-    title: "Ielts",
-    content: "500 regular words",
-  },
-  {
-    id: 5,
-    title: "Ielts",
-    content: "500 regular words",
-  },
-  {
-    id: 6,
-    title: "Ielts",
-    content: "500 regular words",
-  },
-  {
-    id: 7,
-    title: "Ielts",
-    content: "500 regular words",
-  },
-];
-
-
+import { useSelector } from "react-redux";
+import { coursesSelector } from "../../redux/selector";
 
 export default function LearnScreen({navigation}) {
-  const renderItem = ({item})=> <BlockLearn title={item.title} content={item.content} navigation={navigation}/>
+  const courses = useSelector(coursesSelector);
+  const renderItem = ({item})=> <BlockLearn id={item.id} title={item.title} content={item.description} navigation={navigation}/>
   return (
     <SafeAreaView style={styles.container} >
       <FlatList
         style={styles.flatList}
-        data={data}
+        data={courses}
         showsVerticalScrollIndicator={false}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}

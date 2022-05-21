@@ -25,6 +25,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Provider,  useSelector, useDispatch } from 'react-redux';
 import store from './src/redux/store';
 import {userRemaningSelector} from './src/redux/selector'
+import userSlice from "./src/redux/user.slice";
 // import { } from 'react-redux';
 
 const Stack = createStackNavigator();
@@ -43,10 +44,8 @@ export default function AppWrap() {
 export function App() { 
   const [loginState, setLoginState] = useState(false);
   const user = useSelector(userRemaningSelector);
-  // const {loginState: loginSrtate1} = user;
-  console.log(user);
-  const dispatch = useDispatch();
-  console.log(dispatch);
+
+
   
   return (
     // <Provider store={ store }>

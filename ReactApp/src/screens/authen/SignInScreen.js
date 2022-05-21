@@ -15,8 +15,11 @@ import config from '../../config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Constants } from "../../Constants";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import userSlice from "../../redux/user.slice";
+import dataSlice from './../../redux/data.slice';
+import { coursesSelector } from "../../redux/selector";
+// import courseSlice from "../../redux/course.slice";
 
 const window = Dimensions.get('window');
 
@@ -26,13 +29,22 @@ async function loginUser(email, password) {
   const data = {email: email.toLowerCase(), password};
   return await axios.post(url, data);
 }
-
+async function getCourses() {
+  const url = `${Constants.URL_SERVER}courses`;
+  const jwt = await AsyncStorage.getItem('acc_token');
+  console.log(jwt);
+  let config = {
+    headers: {
+       Authorization: "Bearer " + jwt,
+    }
+  };
+  return await (await axios.get(url, config)).data.data;
+}
 
 export default function SignInScreen(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -74,7 +86,10 @@ export default function SignInScreen(props) {
             const res = await loginUser(email, password);
             if(res.data.message == 'Success') {
               await AsyncStorage.setItem('acc_token', res.data.data.toString());
-              dispatch(userSlice.actions.changeLoginState())
+              let courses = await getCourses();
+              
+              dispatch(userSlice.actions.changeLoginState());
+              dispatch(dataSlice.actions.addCourses(courses));
             }
           }}
         >

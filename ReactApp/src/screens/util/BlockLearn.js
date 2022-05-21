@@ -8,10 +8,9 @@ import {
 } from "react-native";
 import React from "react";
 import config from "../../config";
-// import { useNavigation } from "@react-navigation/native";
 
-export default function BlockLearnScreen({ title, content, navigation }) {
-  // const navigation = useNavigation(); // navigation hook
+export default function BlockLearnScreen({ title, content, navigation, id }) {
+  
   return (
     <TouchableOpacity 
       style={styles.container} 

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default createSlice({
   name: 'user',
@@ -9,6 +10,7 @@ export default createSlice({
     changeLoginState: (state) => {
       state.loginState = !state.loginState;
     },
+
     // clearJwt: state => {
     //   state.jwt = null;
     // },
