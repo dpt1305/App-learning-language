@@ -16,6 +16,7 @@ export default function BasicToeicScreen({ route, navigation }) {
       navigation={navigation}
       done = {item.done}
       lessonId = {item.lesson_id}
+      key={item.id}
       // navigation={navigation}
     />
   )};
@@ -27,7 +28,7 @@ export default function BasicToeicScreen({ route, navigation }) {
         renderItem={renderItem}
         data={lessons}
         vertical={true}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => {return index}}
         contentContainerStyle={{
           flex: 0,
           marginLeft: "auto",

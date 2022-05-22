@@ -17,7 +17,7 @@ import BlockTopBar from "../util/BlockTopBar";
 //import config
 import config from "../../config";
 import { useDispatch, useSelector } from "react-redux";
-import { buttonStateSelector, countSelector, indexWord, indexWordSelector } from "../../redux/selector";
+import { buttonStateSelector, countSelector, indexWord, indexWordSelector, wordsSelector } from "../../redux/selector";
 import dataSlice from "../../redux/data.slice";
 
 const newWord = {
@@ -56,6 +56,12 @@ export default function CombinedScreen(props) {
   const buttonState= useSelector(buttonStateSelector);
   const count1 = useSelector(countSelector);
   const indexWord = useSelector(indexWordSelector);
+  const words1 = useSelector(wordsSelector);
+  console.log(words1[indexWord]);
+  
+  //# initial for start session learn
+  dispatch(dataSlice.actions.resetCount());
+  dispatch(dataSlice.actions.resetIndexWord());
   return (
     <SafeAreaView style={styles.container}>
       <BlockTopBar style={styles.topBar} navigation={props.navigation} />

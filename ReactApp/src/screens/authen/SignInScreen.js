@@ -32,7 +32,6 @@ async function loginUser(email, password) {
 async function getCourses() {
   const url = `${Constants.URL_SERVER}courses`;
   const jwt = await AsyncStorage.getItem('acc_token');
-  console.log(jwt);
   let config = {
     headers: {
        Authorization: "Bearer " + jwt,
@@ -87,7 +86,6 @@ export default function SignInScreen(props) {
             if(res.data.message == 'Success') {
               await AsyncStorage.setItem('acc_token', res.data.data.toString());
               let courses = await getCourses();
-              console.log(courses);
               dispatch(userSlice.actions.changeLoginState());
               dispatch(dataSlice.actions.addCourses(courses));
             }
