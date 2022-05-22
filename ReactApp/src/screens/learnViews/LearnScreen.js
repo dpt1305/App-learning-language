@@ -22,7 +22,7 @@ export default function LearnScreen({navigation}) {
         data={courses}
         showsVerticalScrollIndicator={false}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => {return item.id;}}
         // horizontal={true}
         vertical={true}
         contentContainerStyle={{
