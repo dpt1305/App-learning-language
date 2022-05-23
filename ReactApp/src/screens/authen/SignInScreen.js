@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   AsyncStorageStatic,
+  Alert,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import React, { useState } from 'react'
@@ -18,9 +19,9 @@ import { Constants } from "../../Constants";
 import { useDispatch, useSelector } from 'react-redux';
 import userSlice from "../../redux/user.slice";
 import dataSlice from './../../redux/data.slice';
-import { coursesSelector } from "../../redux/selector";
+import { coursesSelector, loadingStateSelector } from "../../redux/selector";
 // import courseSlice from "../../redux/course.slice";
-
+import IndicatorScreen from './../util/IndicatorScreen';
 const window = Dimensions.get('window');
 
 async function loginUser(email, password) {
@@ -43,9 +44,32 @@ async function getCourses() {
 export default function SignInScreen(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const loadingState = useSelector(loadingStateSelector);
+  
   const dispatch = useDispatch();
-
+  
+  const handleSignIn = async () => { 
+    dispatch(dataSlice.actions.switchLoadingState());
+    const res = await loginUser(email, password);
+    if(res.data.message == 'Success') {
+      
+      await AsyncStorage.setItem('acc_token', res.data.data.toString());
+      let courses = await getCourses();
+      dispatch(userSlice.actions.changeLoginState());
+      dispatch(dataSlice.actions.addCourses(courses));
+      dispatch(dataSlice.actions.switchLoadingState());
+    }
+    else if (res.data.message == 'Fail') {
+      dispatch(dataSlice.actions.switchLoadingState());
+      Alert.alert('Sign in error.');
+    }
+  }
+  
   return (
+    (loadingState) ? (
+      <IndicatorScreen/>
+    ) : (
+
     <SafeAreaView style={styles.container}>
       <View style={styles.welcome}>
         <Text style={{ fontSize: 30 }}>Welcome back!</Text>
@@ -81,15 +105,7 @@ export default function SignInScreen(props) {
       <View style={styles.viewButton}>
         <TouchableOpacity
           style={styles.signinButton}
-          onPress={async () => { 
-            const res = await loginUser(email, password);
-            if(res.data.message == 'Success') {
-              await AsyncStorage.setItem('acc_token', res.data.data.toString());
-              let courses = await getCourses();
-              dispatch(userSlice.actions.changeLoginState());
-              dispatch(dataSlice.actions.addCourses(courses));
-            }
-          }}
+          onPress={handleSignIn}
         >
           <Text
             style={{
@@ -110,6 +126,7 @@ export default function SignInScreen(props) {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+    )
   );
 }
 

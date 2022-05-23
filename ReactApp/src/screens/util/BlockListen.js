@@ -16,11 +16,12 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { Audio } from "expo-av";
 // compare string
 import * as stringSimilarity from "string-similarity";
+import { useSelector } from "react-redux";
+import { indexWordSelector, wordsSelector } from "../../redux/selector";
 
-async function  playAudio() {
-  const { sound } = await Audio.Sound.createAsync(
-       require('../../audio/take_us_1.mp3')
-  );
+
+async function  playAudio(uri) {
+  const { sound } = await Audio.Sound.createAsync({uri});
   console.log('Playing');
   await sound.playAsync(); 
 }
@@ -28,6 +29,9 @@ export default function BlockListen(props) {
   const [recording, setRecording] = React.useState();
   const [uriRecording, setUriRecording] = React.useState(null);
   const [percent, setPercent] = React.useState(null);
+
+  const indexWord = useSelector(indexWordSelector);
+  const words = useSelector(wordsSelector);
 
   async function startRecording() {
     try {
@@ -101,14 +105,29 @@ export default function BlockListen(props) {
       body: formData,
       headers: {
         Accept: "application/json",
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "multipart/form-data; boundary=<calculated when request is sent>",
       },
     };
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', Constants.URL_VPS);
+    //# success 
+    xhr.onload = () => {
+      const response = JSON.parse(xhr.response);
+    
+      const compare = stringSimilarity.compareTwoStrings(response.data, words[indexWord].word );
+      setPercent(`${(compare*100).toFixed(2)}%`);
+      if( compare >= 0.6) { props.setDisableButton(false)}
 
-    let response = await fetch(Constants.URL_VPS, options);
-      // .then( res => console.log('111', res ));
-    console.log(response);
-    return response;
+      return response;
+      // ... do something with the successful response
+    };
+    //# error
+    xhr.onerror = e => {
+      console.log(e, 'upload failed');
+    };
+    //# send data 
+    xhr.send(formData);
+    
   }
   async function playBack() {
     await recording.createNewLoadedSoundAsync();
@@ -118,8 +137,8 @@ export default function BlockListen(props) {
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Pronounce correctly</Text>
       <View style={styles.pronounce}>
-        <Text style={{ fontSize: 25 }}>{props.word.word}{"\n"} {props.word.pronunciation} </Text>
-        <TouchableOpacity onPress={playAudio} style={styles.button}>
+        <Text style={{ fontSize: 25 }}>{words[indexWord].word}{"\n"} {words[indexWord].pronunciation} </Text>
+        <TouchableOpacity onPress={() => playAudio(words[indexWord].linkAudio)} style={styles.button}>
           <MaterialCommunityIcons name="volume-high" style={styles.speaker} />
         </TouchableOpacity>
       </View>

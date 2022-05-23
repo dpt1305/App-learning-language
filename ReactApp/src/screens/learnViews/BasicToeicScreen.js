@@ -4,10 +4,13 @@ import React from "react";
 import BlockBasicToeic from "../util/BlockBasicToeic";
 import SchoolScreen from './SchoolScreen';
 import { useSelector } from "react-redux";
-import { lessonsSelector } from "../../redux/selector";
+import { lessonsSelector, loadingStateSelector } from "../../redux/selector";
+import IndicatorScreen from "../util/IndicatorScreen";
 
 export default function BasicToeicScreen({ route, navigation }) {
   const lessons = useSelector(lessonsSelector);
+  const loadingState = useSelector(loadingStateSelector);
+
   const renderItem = ({ item }) => {
     return (
     <BlockBasicToeic
@@ -22,7 +25,9 @@ export default function BasicToeicScreen({ route, navigation }) {
   )};
 
   return (
-    <SafeAreaView style={styles.container}>
+    loadingState 
+    ? <IndicatorScreen/> 
+    : <SafeAreaView style={styles.container}>
       <FlatList
         style={styles.flatList}
         renderItem={renderItem}

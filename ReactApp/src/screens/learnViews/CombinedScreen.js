@@ -7,8 +7,9 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Alert,
+  Modal,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import Block
 import BlockSchool from "../util/BlockSchool";
 import BlockListen from "../util/BlockListen";
@@ -17,8 +18,10 @@ import BlockTopBar from "../util/BlockTopBar";
 //import config
 import config from "../../config";
 import { useDispatch, useSelector } from "react-redux";
-import { buttonStateSelector, countSelector, indexWord, indexWordSelector, wordsSelector } from "../../redux/selector";
+import { buttonStateSelector, countSelector, indexWord, indexWordSelector, loadingStateSelector, wordsSelector } from "../../redux/selector";
 import dataSlice from "../../redux/data.slice";
+// indicator
+import {MaterialIndicator} from "react-native-indicators";
 
 const newWord = {
   word: "student",
@@ -34,20 +37,19 @@ const newWord = {
 function RenderBlock(props) {
 
   if (props.state % 3 == 0)
-    return <BlockSchool setDisableButton={props.setDisableButton} word={props.word} />;
+    return <BlockSchool setDisableButton={props.setDisableButton} />;
   if (props.state % 3 == 1)
     return (
       <BlockType
         setDisableButton={props.setDisableButton}
-        word={props.word}
         setTypeWord={props.setTypeWord}
       />
     );
-  else return <BlockListen word={props.word}/>;
+  else return <BlockListen setDisableButton={props.setDisableButton}/>;
 }
 
 export default function CombinedScreen(props) {
-  const words =  props.route.params.words;
+  // const words =  props.route.params.words;
   const [count, setCount] = useState(0);
   const [disableButton, setDisableButton] = useState(true);
   const [typeWord, setTypeWord] = useState({ textInput: ""});
@@ -56,12 +58,53 @@ export default function CombinedScreen(props) {
   const buttonState= useSelector(buttonStateSelector);
   const count1 = useSelector(countSelector);
   const indexWord = useSelector(indexWordSelector);
-  const words1 = useSelector(wordsSelector);
-  console.log(words1[indexWord]);
+  const words = useSelector(wordsSelector);
+  const loadingState = useSelector(loadingStateSelector);
+  // console.log(words1[indexWord]);
   
   //# initial for start session learn
-  dispatch(dataSlice.actions.resetCount());
-  dispatch(dataSlice.actions.resetIndexWord());
+  useEffect(()=>{
+    dispatch(dataSlice.actions.resetCount());
+    dispatch(dataSlice.actions.resetIndexWord());
+  }, [])
+  
+  function increaseIndexWord() {
+    dispatch(dataSlice.actions.addIndexWord()); 
+  }
+  async function handleNextButton(props) {
+    if(indexWord == (words.length-1)) {
+      return props.navigation.navigate('Sumary');
+    }
+    if(count%3 == 1 && typeWord.textInput == words[indexWord].word){
+      Alert.alert(
+        "Correct",
+        `${words[indexWord].word}: ${words[indexWord].meaning}`,
+        
+          { text: "OK", onPress: () =>{
+            setCount(count + 1);
+            setDisableButton(true);
+          } },
+      );
+    }
+    if(count%3 == 1 && typeWord.textInput != words[indexWord].word) {
+      Alert.alert("Incorrect", `${words[indexWord].word}: ${words[indexWord].meaning}`, [
+        {
+          text: "OK",
+          onPress: () => {
+
+            setDisableButton(true);
+          },
+        },
+      ]);
+    }
+    else {
+      await setCount(count+1);
+      setDisableButton(true);
+      // dispatch(dataSlice.actions.addCount());
+      // dispatch(dataSlice.actions.switchButtonState(false));
+    }
+
+  }
   return (
     <SafeAreaView style={styles.container}>
       <BlockTopBar style={styles.topBar} navigation={props.navigation} />
@@ -69,7 +112,7 @@ export default function CombinedScreen(props) {
       <View style={styles.viewBlock}>
         <RenderBlock
           setDisableButton={setDisableButton}
-          state={count1}
+          state={count}
           word={newWord}
           setTypeWord={setTypeWord}
         />
@@ -77,42 +120,14 @@ export default function CombinedScreen(props) {
 
       <View style={styles.buttonNextView}>
         <TouchableOpacity
-          style={!buttonState ? styles.buttonNextDisable : styles.buttonNext}
-          disabled={!buttonState}
-          onPress={() => {
-            if(count%3 == 1 && typeWord.textInput == newWord.word){
-              Alert.alert(
-                "Correct",
-                `${newWord.word}: ${newWord.meaning}`,
-                
-                  { text: "OK", onPress: () =>{
-                    setCount(count + 1);
-                    setDisableButton(true);
-                  } },
-              );
-            }
-            if(count%3 == 1 && typeWord.textInput != newWord.word) {
-              Alert.alert("Incorrect", `${newWord.word}: ${newWord.meaning}`, [
-                {
-                  text: "OK",
-                  onPress: () => {
-
-                    setDisableButton(true);
-                  },
-                },
-              ]);
-            }
-            else {
-              dispatch(dataSlice.actions.addCount());
-              dispatch(dataSlice.actions.switchButtonState(false));
-
-            }
-          }}
+          style={disableButton ? styles.buttonNextDisable : styles.buttonNext}
+          disabled={disableButton}
+          onPress={() => handleNextButton(props)}
         >
           <Text style={{ fontSize: 34, padding: 20 }}>Next</Text>
         </TouchableOpacity>
       </View>
-
+      
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         // keyboardVerticalOffset="20"

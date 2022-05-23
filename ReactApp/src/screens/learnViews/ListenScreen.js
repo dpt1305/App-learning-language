@@ -13,6 +13,8 @@ import config from "../../config";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 //audio 
 import { Audio } from "expo-av";
+import { useSelector } from "react-redux";
+import { indexWordSelector, wordsSelector } from "../../redux/selector";
 async function  playAudio() {
   const { sound } = await Audio.Sound.createAsync(
        require('../../audio/take_us_1.mp3')
@@ -25,8 +27,11 @@ export default function ListenScreen({ navigation }) {
   const [isFullFilled, setIsFullFilled] = useState(false);
   // console.log(setIsFullFilled);
   // const [isListened, setIsListened] = useState(false);
+  const indexWord = useSelector(indexWordSelector);
+  const words = useSelector(wordsSelector);
+  
 
-  const createBackButtonAlert = () =>
+  const createBackButtonAlert = () => {
     Alert.alert("Are you sure?", "If you quit, the process will be deleted.", [
       {
         text: "Cancel",
@@ -35,6 +40,7 @@ export default function ListenScreen({ navigation }) {
       },
       { text: "OK", onPress: () => navigation.navigate("Home") },
     ]);
+  }
 
   return (
     <SafeAreaView style={styles.container}>

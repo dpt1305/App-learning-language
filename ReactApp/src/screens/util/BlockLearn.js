@@ -27,14 +27,21 @@ async function getLessons(id) {
 
 export default function BlockLearnScreen({ title, content, navigation, id }) {
   const dispatch = useDispatch();
+  
+  const handleBlockLearn = async () => {
+    dispatch(dataSlice.actions.switchLoadingState())
+    const lessons = await getLessons(id);
+    if( lessons ) {
+      dispatch(dataSlice.actions.addLessons(lessons));
+      dispatch(dataSlice.actions.switchLoadingState())
+      navigation.navigate("BasicToeic", {title});
+    }
+  };
+
   return (
     <TouchableOpacity 
       style={styles.container} 
-      onPress={async () => {
-        const lessons = await getLessons(id);
-        dispatch(dataSlice.actions.addLessons(lessons));
-        navigation.navigate("BasicToeic", {title});
-      }}
+      onPress={handleBlockLearn}
     >
       <View style={styles.title}>
         <Text style={styles.titleText}>{title}</Text>

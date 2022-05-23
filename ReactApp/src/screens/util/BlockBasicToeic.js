@@ -41,15 +41,21 @@ export default function BlockBasicToeic({id, content, navigation, done, lessonId
             }}
           /> : " ";
   let style = !done ? styles.container : styles.containerDisable;
+
+  const handleBlockBasicToeic = async () => {
+    dispatch(dataSlice.actions.switchLoadingState())
+    const words = await getWords(lessonId);
+    if(words) {
+      dispatch(dataSlice.actions.addWords(words));
+      navigation.navigate("Combined", words);
+      dispatch(dataSlice.actions.switchLoadingState())
+    }
+  }
   return (
     <TouchableOpacity
       style={style}
       disabled={done}
-      onPress={async () => {
-        const words = await getWords(lessonId);
-        dispatch(dataSlice.actions.addWords(words));
-        navigation.navigate("Combined", words);
-      }}
+      onPress={handleBlockBasicToeic}
     >
       <ImageBackground
         source={require("../../images/icons8-swastika-55.png")}

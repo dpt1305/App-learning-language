@@ -13,3 +13,5 @@ export const learnedWordsSelector = createSelector((state) => state.data, (data)
 export const buttonStateSelector = createSelector(state => state.data, data => data.buttonState);
 export const countSelector = createSelector(state => state.data, data => data.count);
 export const indexWordSelector = createSelector(state => state.data, data => data.indexWord);
+
+export const loadingStateSelector = createSelector(state => state.data, data => data.loadingState);

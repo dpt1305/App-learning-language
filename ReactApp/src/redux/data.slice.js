@@ -10,6 +10,7 @@ export default createSlice({
     buttonState: false,
     count: 0,
     indexWord: 0,
+    loadingState: false,
   },
   reducers: {
     addCourses: (state, action) => {state.courses = action.payload},
@@ -20,15 +21,16 @@ export default createSlice({
     
     addLearnedWords: (state, action) => {state.learnedWords.push(action.payload) },
 
-    switchButtonState: (state, action) => {state.buttonState = action.payload},
+    buttonStateFalse: (state) => {state.buttonState = false},
+    buttonStateTrue: (state) => {state.buttonState = true},
     
     addCount: (state) => {state.count += 1},
     resetCount: (state) => {state.count = 0},
     
-    addIndexWord: (state) => {state.indexWord += 1},
+    addIndexWord: (state) => {state.indexWord = state.indexWord + 1},
     resetIndexWord: (state) => {state.indexWord = 0},
 
-
+    switchLoadingState: (state) => {state.loadingState = !state.loadingState}
   }
 
 })

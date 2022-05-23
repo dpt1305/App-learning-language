@@ -10,6 +10,8 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
     "@expo/vector-icons": "^12.0.0",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-google-signin/google-signin": "^7.1.0",
@@ -44,7 +46,6 @@
     "react-native-gesture-handler": "^2.1.1",
     "react-native-indicators": "^0.17.0",
     "react-native-onboarding-swiper": "^1.2.0",
-    "react-native-paper": "^4.12.0",
     "react-native-sound": "^0.11.2",
     "react-native-swiper": "^1.6.0",
     "react-native-swiper-flatlist": "^3.0.16",

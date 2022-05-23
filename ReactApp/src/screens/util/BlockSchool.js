@@ -18,21 +18,23 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 //audio 
 import { Audio } from "expo-av";
 import { useDispatch, useSelector } from "react-redux";
-import { buttonStateSelector } from "../../redux/selector";
+import { buttonStateSelector, indexWordSelector, wordsSelector } from "../../redux/selector";
 import dataSlice from "../../redux/data.slice";
-async function  playAudio() {
-  const { sound } = await Audio.Sound.createAsync(
-       require('./take_us_1.mp3')
-  );
-  console.log('Playing');
+async function  playAudio(uri) {
+  const { sound } = await Audio.Sound.createAsync({ uri });
   await sound.playAsync(); 
 }
-const meaning: string = 'This is the meaning of Take word. This is lorem for testing, it\'s too long ';
+
 
 export default function BlockSchool(props) {
   const [ isFlipped, setIsFlipped ] = useState(false);
   const dispatch = useDispatch();
   
+  const words = useSelector(wordsSelector);
+  const indexWord = useSelector(indexWordSelector);
+  const buttonState = useSelector(buttonStateSelector);
+  // console.log(words[indexWord]);
+
   return (
     <SafeAreaView style={styles.container}>
       <FlipCard
@@ -44,8 +46,9 @@ export default function BlockSchool(props) {
         flip={false}
         clickable={true}
         onFlipEnd={() => {
-          setIsFlipped(true);
-          if(!isFlipped) { dispatch(dataSlice.actions.switchButtonState(true))}
+          // if(isFlipped && buttonState==false) { dispatch(dataSlice.actions.switchButtonState(true))}
+          if(!isFlipped) { setIsFlipped(true); }
+          if(isFlipped) { props.setDisableButton(false)}
         }}
       >
         {/* Face Side */}
@@ -58,7 +61,7 @@ export default function BlockSchool(props) {
               marginTop: 20,
             }}
           >
-            <TouchableOpacity onPress={playAudio} style={styles.button}>
+            <TouchableOpacity onPress={() => playAudio(words[indexWord].linkAudio)} style={styles.button}>
               <MaterialCommunityIcons
                 name="volume-high"
                 style={styles.speaker}
@@ -69,10 +72,10 @@ export default function BlockSchool(props) {
             style={styles.image}
             loadingIndicatorSource
             source={{
-              uri: "https://globalsymbols.com/uploads/production/image/imagefile/46378/17_46379_0591077c-0cdc-485e-b280-912e26623824.png",
+              uri: words[indexWord].linkImage,
             }}
           />
-          <Text style={styles.meaning}>{props.word.meaning}</Text>
+          <Text style={styles.meaning}>{words[indexWord].meaning}</Text>
         </View>
 
         {/* Back Side */}
@@ -84,7 +87,7 @@ export default function BlockSchool(props) {
               marginTop: 20,
             }}
           >
-            <TouchableOpacity onPress={playAudio} style={styles.button}>
+            <TouchableOpacity onPress={() => playAudio(words[indexWord].linkAudio)} style={styles.button}>
               <MaterialCommunityIcons
                 name="volume-high"
                 style={styles.speaker}
@@ -92,10 +95,10 @@ export default function BlockSchool(props) {
             </TouchableOpacity>
           </View>
           
-          <Text style={styles.word}>{props.word.word}</Text>
-          <Text style={styles.pronunciation}>{props.word.pronunciation}</Text>
+          <Text style={styles.word}>{words[indexWord].word}</Text>
+          <Text style={styles.pronunciation}>{words[indexWord].pronunciation}</Text>
 
-          <Text style={styles.meaning}>{props.word.meaning}</Text>
+          <Text style={styles.meaning}>{words[indexWord].meaning}</Text>
         </View>
       </FlipCard>
       

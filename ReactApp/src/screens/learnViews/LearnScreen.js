@@ -6,16 +6,21 @@ import {
   FlatList,
   StatusBar,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
+import IndicatorScreen from "../util/IndicatorScreen";
 
 import  BlockLearn  from "../util/BlockLearn";
 import { useSelector } from "react-redux";
-import { coursesSelector } from "../../redux/selector";
+import { coursesSelector, loadingStateSelector } from "../../redux/selector";
 
 export default function LearnScreen({navigation}) {
   const courses = useSelector(coursesSelector);
+  const loadingState = useSelector(loadingStateSelector);
+
   const renderItem = ({item})=> <BlockLearn id={item.id} title={item.title} content={item.description} navigation={navigation}/>
   return (
+  loadingState ? (<IndicatorScreen/>)
+  : (
     <SafeAreaView style={styles.container} >
       <FlatList
         style={styles.flatList}
@@ -32,6 +37,7 @@ export default function LearnScreen({navigation}) {
         }}
       />
     </SafeAreaView>
+  )
   );
 }
 

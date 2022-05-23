@@ -26,6 +26,7 @@ import { Provider,  useSelector, useDispatch } from 'react-redux';
 import store from './src/redux/store';
 import {userRemaningSelector} from './src/redux/selector'
 import userSlice from "./src/redux/user.slice";
+import SumaryScreen from "./src/sumary/SumaryScreen";
 // import { } from 'react-redux';
 
 const Stack = createStackNavigator();
@@ -64,6 +65,8 @@ export function App() {
           ) : (
             // <Stack.Screen name="BlockLearn" component={BlockLearn} />
             <Stack.Group>
+              <Stack.Screen name="Sumary" component={SumaryScreen} />
+
               <Stack.Screen name="Home" component={Tabs} />
               <Stack.Screen
                 name="School"
