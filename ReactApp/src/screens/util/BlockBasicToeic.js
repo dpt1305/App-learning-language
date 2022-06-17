@@ -22,7 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 
 async function getWords(id) {
-  const url = `${Constants.URL_SERVER}words/${id}`;
+  const url = `${Constants.URL_SERVER}/words/${id}`;
   const jwt = await  AsyncStorage.getItem('acc_token');
   let config = {
     headers: {

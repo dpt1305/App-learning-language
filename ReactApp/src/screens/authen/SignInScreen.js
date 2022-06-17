@@ -25,13 +25,13 @@ import IndicatorScreen from './../util/IndicatorScreen';
 const window = Dimensions.get('window');
 
 async function loginUser(email, password) {
-  const url = `${Constants.URL_SERVER}auth/signin`;
+  const url = `${Constants.URL_SERVER}/auth/signin`;
 
   const data = {email: email.toLowerCase(), password};
   return await axios.post(url, data);
 }
 async function getCourses() {
-  const url = `${Constants.URL_SERVER}courses`;
+  const url = `${Constants.URL_SERVER}/courses`;
   const jwt = await AsyncStorage.getItem('acc_token');
   let config = {
     headers: {
@@ -40,31 +40,48 @@ async function getCourses() {
   };
   return (await axios.get(url, config)).data.data;
 }
-
+async function getTimeout() {
+  const url = `${Constants.URL_SERVER}/users/user-timeout`;
+  const jwt = await AsyncStorage.getItem('acc_token');
+  let config = {
+    headers: {
+       Authorization: "Bearer " + jwt,
+    }
+  };
+  return (await axios.get(url, config)).data.data;
+}
 export default function SignInScreen(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const loadingState = useSelector(loadingStateSelector);
-  
+  // const loadingState = useSelector(loadingStateSelector);
+  const [loadingState, useLoadingState] = useState(false);
+
   const dispatch = useDispatch();
   
   const handleSignIn = async () => { 
-    dispatch(dataSlice.actions.switchLoadingState());
+    //# call log in API 
+    useLoadingState(true);
     const res = await loginUser(email, password);
+
+    //# handle success
     if(res.data.message == 'Success') {
-      
       await AsyncStorage.setItem('acc_token', res.data.data.toString());
       let courses = await getCourses();
+      let timeout = await getTimeout();
+
       dispatch(userSlice.actions.changeLoginState());
+      dispatch(userSlice.actions.setTimeout(timeout));
       dispatch(dataSlice.actions.addCourses(courses));
-      dispatch(dataSlice.actions.switchLoadingState());
+
+      useLoadingState(false);
     }
-    else if (res.data.message == 'Fail') {
-      dispatch(dataSlice.actions.switchLoadingState());
-      Alert.alert('Sign in error.');
+    //# handle fail
+    else {
+      useLoadingState(false);
+      Alert.alert(`${res.data.data}`);
     }
   }
-  
+
   return (
     (loadingState) ? (
       <IndicatorScreen/>

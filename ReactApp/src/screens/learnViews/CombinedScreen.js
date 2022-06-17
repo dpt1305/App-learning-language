@@ -63,18 +63,15 @@ export default function CombinedScreen(props) {
   // console.log(words1[indexWord]);
   
   //# initial for start session learn
-  useEffect(()=>{
-    dispatch(dataSlice.actions.resetCount());
-    dispatch(dataSlice.actions.resetIndexWord());
-  }, [])
+  // useEffect(()=>{
+  //   dispatch(dataSlice.actions.resetCount());
+  //   dispatch(dataSlice.actions.resetIndexWord());
+  // }, [])
   
   function increaseIndexWord() {
     dispatch(dataSlice.actions.addIndexWord()); 
   }
   async function handleNextButton(props) {
-    if(indexWord == (words.length-1)) {
-      return props.navigation.navigate('Sumary');
-    }
     if(count%3 == 1 && typeWord.textInput == words[indexWord].word){
       Alert.alert(
         "Correct",
@@ -98,8 +95,13 @@ export default function CombinedScreen(props) {
       ]);
     }
     else {
-      await setCount(count+1);
+      setCount(count+1);
       setDisableButton(true);
+      if(count%3 == 2 && count !=0) {
+        dispatch(dataSlice.actions.addIndexWord())
+      } else if( indexWord == (words.length) ) {
+        return props.navigation.navigate('Sumary');
+      }
       // dispatch(dataSlice.actions.addCount());
       // dispatch(dataSlice.actions.switchButtonState(false));
     }

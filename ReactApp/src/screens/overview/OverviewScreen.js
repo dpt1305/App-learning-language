@@ -22,7 +22,14 @@ const data = {
 
 export default function OverviewScreen() {
   const [countDone, setCountDone] = useState(false);
+  const [timeout, setTimeout] = useState(0);
   const { width, height } = Dimensions.get("window");
+
+  //# get time out
+  const buttonState = useSelector(buttonStateSelector);
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.chartView}>

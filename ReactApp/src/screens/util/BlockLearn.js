@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import dataSlice from './../../redux/data.slice';
 
 async function getLessons(id) {
-  const url = `${Constants.URL_SERVER}lessons/${id}`;
+  const url = `${Constants.URL_SERVER}/lessons/${id}`;
   const jwt = await  AsyncStorage.getItem('acc_token');
   let config = {
     headers: {

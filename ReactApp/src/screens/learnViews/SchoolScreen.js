@@ -11,7 +11,7 @@ import {
 import React, { useState } from "react";
 import config from '../../config';
 import BlockSchool from "../util/BlockSchool";
-import BasicToeic from "../learnViews/BasicToeicScreen";
+
 // icon
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 

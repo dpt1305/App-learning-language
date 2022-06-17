@@ -43,7 +43,7 @@ export default function InfoScreen() {
         <Text>Email: {user.email}</Text>
       </View>
 
-      <View style={styles.block}>
+      {/* <View style={styles.block}>
         <View style={{ flexDirection: "row", alignContent: "space-between" }}>
           <Text style={{ fontSize: 24 }}>Music</Text>
           <Switch
@@ -55,7 +55,7 @@ export default function InfoScreen() {
             value={isEnabled}
           />
         </View>
-      </View>
+      </View> */}
 
       <TouchableOpacity 
         onPress={async ()=> {

@@ -65,7 +65,6 @@ export function App() {
           ) : (
             // <Stack.Screen name="BlockLearn" component={BlockLearn} />
             <Stack.Group>
-              <Stack.Screen name="Sumary" component={SumaryScreen} />
 
               <Stack.Screen name="Home" component={Tabs} />
               <Stack.Screen
@@ -80,6 +79,7 @@ export function App() {
               <Stack.Screen name="Type" component={TypeScreen} />
               <Stack.Screen name="Listen" component={ListenScreen} />
               <Stack.Screen name="Combined" component={CombinedScreen} />
+              <Stack.Screen name="Sumary" component={SumaryScreen} />
             </Stack.Group>
           )}
         </Stack.Navigator>
