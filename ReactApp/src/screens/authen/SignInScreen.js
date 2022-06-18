@@ -30,7 +30,7 @@ async function loginUser(email, password) {
   const data = {email: email.toLowerCase(), password};
   return await axios.post(url, data);
 }
-async function getCourses() {
+export async function getCourses() {
   const url = `${Constants.URL_SERVER}/courses`;
   const jwt = await AsyncStorage.getItem('acc_token');
   let config = {
@@ -40,7 +40,7 @@ async function getCourses() {
   };
   return (await axios.get(url, config)).data.data;
 }
-async function getTimeout() {
+export async function getTimeout() {
   const url = `${Constants.URL_SERVER}/users/user-timeout`;
   const jwt = await AsyncStorage.getItem('acc_token');
   let config = {
@@ -50,8 +50,18 @@ async function getTimeout() {
   };
   return (await axios.get(url, config)).data.data;
 }
-async function getData() {
-  const url = `${Constants.URL_SERVER}/users/user-timeout`;
+export async function getData() {
+  const url = `${Constants.URL_SERVER}/learnedwords/report`;
+  const jwt = await AsyncStorage.getItem('acc_token');
+  let config = {
+    headers: {
+       Authorization: "Bearer " + jwt,
+    }
+  };
+  return (await axios.get(url, config)).data.data;
+}
+export async function getLearnedLesson() {
+  const url = `${Constants.URL_SERVER}/users/user-learnedlesson`;
   const jwt = await AsyncStorage.getItem('acc_token');
   let config = {
     headers: {
@@ -77,11 +87,16 @@ export default function SignInScreen(props) {
     if(res.data.message == 'Success') {
       await AsyncStorage.setItem('acc_token', res.data.data.toString());
       let courses = await getCourses();
-      let timeout: Date = await getTimeout();
+      let timeout = await getTimeout();
+      const data =  await getData();
+      const learnedLesson = await getLearnedLesson();
 
       await dispatch(userSlice.actions.setTimeout(timeout));
       await dispatch(dataSlice.actions.addCourses(courses));
       await dispatch(userSlice.actions.changeLoginState());
+      await dispatch(userSlice.actions.setDataReview(data));
+      await dispatch(userSlice.actions.setLearnedLesson(learnedLesson));
+      await dispatch(dataSlice.actions.resetLoadingState());
 
       await useLoadingState(false);
     }

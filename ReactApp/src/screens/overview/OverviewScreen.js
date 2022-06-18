@@ -14,17 +14,10 @@ import { useDispatch, useSelector } from "react-redux";
 // configg
 import config from "../../config";
 import { userRemaningSelector, wordsSelector } from "../../redux/selector";
-const data = {
-  labels: ["1", "2", "3", "4", "5"],
-  datasets: [
-    {
-      data: [22, 30, 28, 30, 55],
-    },
-  ],
-};
+
 function handleTimeout(date) {
   if(date == null) {
-    return 0;
+    return null;
   }
   const newDate = new Date(date);
   const now = new Date();
@@ -43,6 +36,15 @@ export default function OverviewScreen() {
   const user = useSelector(userRemaningSelector);
   const timeoutFromHandleTimeout = handleTimeout(user.timeout);
 
+  //# get data for report
+  const data = {
+    labels: ["0", "1", "2", "3", "4", "5"],
+    datasets: [
+      {
+        data: user.dataReport,
+      },
+    ],
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.chartView}>
@@ -120,7 +122,7 @@ export default function OverviewScreen() {
           onPress={() => navigation.navigate("Type")}
           disabled={!countDone}
         >
-          <Text style={{ fontSize: 34, padding: 20 }}>Review 10 words...</Text>
+          <Text style={{ fontSize: 34, padding: 20 }}>Review words...</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

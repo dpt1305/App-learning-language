@@ -1,17 +1,74 @@
 import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+//# indicator 
+import IndicatorScreen from './../screens/util/IndicatorScreen';
+
+
+//# redux
+import { useSelector } from 'react-redux';
+import dataSlice from '../redux/data.slice';
+import { dataSelector } from '../redux/selector';
+
+//# import get functions
+import {getCourses, getData, getLearnedLesson, getTimeout} from './../screens/authen/SignInScreen'
+//# axios
 import config from '../config'
+import axios from 'axios';
+import { Constants } from '../Constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const window = Dimensions.get('window');
 
+async function postLearnedwords(lessonId) {
+  const url = `${Constants.URL_SERVER}/learnedwords`;
+  const jwt = await AsyncStorage.getItem('acc_token');
+  const data = {
+    lessonId: lessonId,
+  };
+  let config = {
+    headers: {
+      Authorization: "Bearer " + jwt,
+    }
+  };
+  return (await axios({
+    url, 
+    data,
+    method: 'post',
+    ...config
+  })).data;
+}
 export default function SumaryScreen(props) {
+  const [loadingState, useLoadingState] = useState(false);
+  
+  //# get all infor from redux
+  const lessonId = useSelector(dataSelector).lessonId;
+
   const backToOverview = async () => {
+    useLoadingState(true);
+
+    //# create learnedwords API & get all info
+    await postLearnedwords(lessonId);
+    
+    let timeout = await getTimeout();
+    let data =  await getData();
+    let learnedLesson = await getLearnedLesson();
+    //# reset infor in redux
+    dispatch(userSlice.actions.setTimeout(timeout));
+    dispatch(userSlice.actions.setDataReview(data));
+    dispatch(userSlice.actions.setLearnedLesson(learnedLesson));
+    
+    //# navigation
     props.navigation.navigate('Home');
+    useLoadingState(false);
   }
   return (
+    ( loadingState ) ? ( 
+      <IndicatorScreen/>
+    )
+    : (
     <SafeAreaView style={styles.container}>
       <View style={styles.textView}>
-        <Text style={{ fontSize: 30 }}>You have done this lesson.</Text>
-        <Text style={{ fontSize: 30 }}>This is so awesome.</Text>
+        <Text style={{ fontSize: 30 }}>Welldone my friend.</Text>
       </View>
 
       <View style={styles.viewButton}>
@@ -27,11 +84,12 @@ export default function SumaryScreen(props) {
               fontWeight: "bold",
             }}
           >
-            Back to Overview
+            Let's get back to Overview.
           </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+    )
   )
 }
 
@@ -42,6 +100,7 @@ const styles = StyleSheet.create({
   textView: {
     flex: 7,
     justifyContent: 'center',
+    alignItems: 'center',
   },  
   viewButton: {
     flex: 2,

@@ -4,4 +4,5 @@ export default {
   secondary: "#F4C395",
   disable: "#E0DEDE",
   blockImage: "#C4C4C4",
+  greenDone: "#a2cf6e",
 };

@@ -28,6 +28,12 @@ export default function InfoScreen() {
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const dispatch = useDispatch();
 
+
+  const resetAllInforBeforeLogout = async () => {
+    await AsyncStorage.setItem('acc_token', "");
+    await dispatch(userSlice.actions.setLearnedLesson([]));
+    await dispatch(userSlice.actions.changeLoginState());
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.block}>
@@ -58,11 +64,7 @@ export default function InfoScreen() {
       </View> */}
 
       <TouchableOpacity 
-        onPress={async ()=> {
-            await AsyncStorage.setItem('acc_token', "");
-            dispatch(userSlice.actions.changeLoginState())
-          } 
-        } 
+        onPress={ resetAllInforBeforeLogout } 
         style={styles.logoutButton}
       >
         <Text

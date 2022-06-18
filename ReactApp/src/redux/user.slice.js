@@ -6,7 +6,8 @@ export default createSlice({
   initialState: {
     loginState: false,
     timeout: null,
-    dataReview: [],
+    dataReport: [],
+    learnedLesson: [],
   },
   reducers: {
     changeLoginState: (state) => {
@@ -15,8 +16,8 @@ export default createSlice({
     setTimeout: (state, action) => {state.timeout = action.payload; },
     // addLessons: (state, action) => {state.lessons = action.payload},
 
-    setDataReview: (state, action) => { state.dataReview = action.payload; },
-
+    setDataReview: (state, action) => { state.dataReport = action.payload; },
+    setLearnedLesson: (state, action) => { state.learnedLesson = action.payload }
 
     // clearJwt: state => {
     //   state.jwt = null;

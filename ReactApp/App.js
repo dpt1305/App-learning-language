@@ -78,7 +78,12 @@ export function App() {
               />
               <Stack.Screen name="Type" component={TypeScreen} />
               <Stack.Screen name="Listen" component={ListenScreen} />
-              <Stack.Screen name="Combined" component={CombinedScreen} />
+              <Stack.Screen name="Combined" component={CombinedScreen} 
+                options={{
+                  headerShown: false,
+                  gestureEnabled: false,
+                }}
+              />
               <Stack.Screen name="Sumary" component={SumaryScreen} />
             </Stack.Group>
           )}

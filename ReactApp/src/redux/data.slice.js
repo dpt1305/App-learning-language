@@ -6,7 +6,7 @@ export default createSlice({
     courses: [],
     lessons: [],
     words: [],
-    learnedWords: [],
+    lessonId: null,
     buttonState: false,
     count: 0,
     indexWord: 0,
@@ -19,7 +19,7 @@ export default createSlice({
     
     addWords: (state, action) => {state.words = action.payload},
     
-    addLearnedWords: (state, action) => {state.learnedWords.push(action.payload) },
+    setLessonId: (state, action) => {state.lessonId = action.payload },
 
     buttonStateFalse: (state) => {state.buttonState = false},
     buttonStateTrue: (state) => {state.buttonState = true},
@@ -30,7 +30,9 @@ export default createSlice({
     addIndexWord: (state) => {state.indexWord = state.indexWord + 1},
     resetIndexWord: (state) => {state.indexWord = 0},
 
-    switchLoadingState: (state) => {state.loadingState = !state.loadingState}
+    switchLoadingState: (state) => {state.loadingState = !state.loadingState},
+    resetLoadingState: (state) => {state.loadingState = false},
+
   }
 
 })

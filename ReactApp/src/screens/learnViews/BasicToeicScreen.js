@@ -17,7 +17,7 @@ export default function BasicToeicScreen({ route, navigation }) {
       id={lessons.indexOf(item)+1}
       content={item.lesson_title}
       navigation={navigation}
-      done = {item.done}
+      // done = {item.done}
       lessonId = {item.lesson_id}
       key={item.id}
       // navigation={navigation}

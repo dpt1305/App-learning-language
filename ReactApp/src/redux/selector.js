@@ -4,6 +4,7 @@ export const useSelector = (state) => state.user;
 export const userRemaningSelector = createSelector(useSelector, (user) => {
   return user
 })
+export const dataSelector = createSelector((state) => state.data, (data) => data);
 
 export const coursesSelector = createSelector((state) => state.data, (data) => data.courses);
 export const lessonsSelector = createSelector((state) => state.data, (data) => data.lessons);

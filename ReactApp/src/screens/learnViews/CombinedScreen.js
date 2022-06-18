@@ -15,6 +15,7 @@ import BlockSchool from "../util/BlockSchool";
 import BlockListen from "../util/BlockListen";
 import BlockType from "../util/BlockType";
 import BlockTopBar from "../util/BlockTopBar";
+import SumaryScreen from "./../../sumary/SumaryScreen"
 //import config
 import config from "../../config";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,22 +36,26 @@ const newWord = {
 };
 
 function RenderBlock(props) {
+  if( props.indexWord < props.words.length) {
+    if (props.state % 3 == 0)
+      return <BlockSchool setDisableButton={props.setDisableButton} />;
+    if (props.state % 3 == 1)
+      return (
+        <BlockType
+          setDisableButton={props.setDisableButton}
+          setTypeWord={props.setTypeWord}
+        />
+      );
+    else return <BlockListen setDisableButton={props.setDisableButton}/>;
 
-  if (props.state % 3 == 0)
-    return <BlockSchool setDisableButton={props.setDisableButton} />;
-  if (props.state % 3 == 1)
-    return (
-      <BlockType
-        setDisableButton={props.setDisableButton}
-        setTypeWord={props.setTypeWord}
-      />
-    );
-  else return <BlockListen setDisableButton={props.setDisableButton}/>;
+  } else {
+    return <SumaryScreen/>
+  }
 }
 
 export default function CombinedScreen(props) {
   // const words =  props.route.params.words;
-  const [count, setCount] = useState(0);
+  const [backOverview, setBackOverview] = useState(false);
   const [disableButton, setDisableButton] = useState(true);
   const [typeWord, setTypeWord] = useState({ textInput: ""});
 
@@ -71,19 +76,21 @@ export default function CombinedScreen(props) {
   function increaseIndexWord() {
     dispatch(dataSlice.actions.addIndexWord()); 
   }
-  async function handleNextButton(props) {
-    if(count%3 == 1 && typeWord.textInput == words[indexWord].word){
+  async function handleNextButton() {
+    if(count1%3 == 1 && typeWord.textInput == words[indexWord].word){
       Alert.alert(
         "Correct",
         `${words[indexWord].word}: ${words[indexWord].meaning}`,
         
           { text: "OK", onPress: () =>{
-            setCount(count + 1);
+            // setCount(count1 + 1);
+            dispatch(dataSlice.actions.addCount());
+
             setDisableButton(true);
           } },
       );
     }
-    if(count%3 == 1 && typeWord.textInput != words[indexWord].word) {
+    if(count1%3 == 1 && typeWord.textInput != words[indexWord].word) {
       Alert.alert("Incorrect", `${words[indexWord].word}: ${words[indexWord].meaning}`, [
         {
           text: "OK",
@@ -95,39 +102,46 @@ export default function CombinedScreen(props) {
       ]);
     }
     else {
-      setCount(count+1);
+      // setCount(count1+1);
+      await dispatch(dataSlice.actions.addCount());
       setDisableButton(true);
-      if(count%3 == 2 && count !=0) {
+      if((count1)%3 == 2 && (count1) !=0) {
         dispatch(dataSlice.actions.addIndexWord())
-      } else if( indexWord == (words.length) ) {
-        return props.navigation.navigate('Sumary');
       }
-      // dispatch(dataSlice.actions.addCount());
-      // dispatch(dataSlice.actions.switchButtonState(false));
     }
-
   }
   return (
+    (indexWord == words.length) ? (
+      <SumaryScreen navigation={props.navigation}/>
+    ) 
+    : (
     <SafeAreaView style={styles.container}>
       <BlockTopBar style={styles.topBar} navigation={props.navigation} />
 
       <View style={styles.viewBlock}>
         <RenderBlock
           setDisableButton={setDisableButton}
-          state={count}
-          word={newWord}
+          state={count1}
+          words={words}
           setTypeWord={setTypeWord}
+          indexWord={indexWord}
         />
       </View>
 
-      <View style={styles.buttonNextView}>
-        <TouchableOpacity
-          style={disableButton ? styles.buttonNextDisable : styles.buttonNext}
-          disabled={disableButton}
-          onPress={() => handleNextButton(props)}
-        >
-          <Text style={{ fontSize: 34, padding: 20 }}>Next</Text>
-        </TouchableOpacity>
+      <View 
+        style={styles.buttonNextView}
+        isHidden={backOverview}
+      >
+        
+          <TouchableOpacity
+            style={disableButton ? styles.buttonNextDisable : styles.buttonNext}
+            disabled={disableButton}
+            onPress={() => handleNextButton()}
+            isHidden={backOverview}
+          >
+            <Text style={{ fontSize: 34, padding: 20 }}>Next</Text>
+          </TouchableOpacity>
+        
       </View>
       
       <KeyboardAvoidingView
@@ -136,7 +150,7 @@ export default function CombinedScreen(props) {
         style={{ marginTop: 10 }}
       ></KeyboardAvoidingView>
     </SafeAreaView>
-  );
+  ));
 }
 const styles = StyleSheet.create({
   container: {
