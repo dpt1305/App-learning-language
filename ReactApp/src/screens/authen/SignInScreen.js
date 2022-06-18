@@ -50,6 +50,16 @@ async function getTimeout() {
   };
   return (await axios.get(url, config)).data.data;
 }
+async function getData() {
+  const url = `${Constants.URL_SERVER}/users/user-timeout`;
+  const jwt = await AsyncStorage.getItem('acc_token');
+  let config = {
+    headers: {
+       Authorization: "Bearer " + jwt,
+    }
+  };
+  return (await axios.get(url, config)).data.data;
+}
 export default function SignInScreen(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -67,13 +77,13 @@ export default function SignInScreen(props) {
     if(res.data.message == 'Success') {
       await AsyncStorage.setItem('acc_token', res.data.data.toString());
       let courses = await getCourses();
-      let timeout = await getTimeout();
+      let timeout: Date = await getTimeout();
 
-      dispatch(userSlice.actions.changeLoginState());
-      dispatch(userSlice.actions.setTimeout(timeout));
-      dispatch(dataSlice.actions.addCourses(courses));
+      await dispatch(userSlice.actions.setTimeout(timeout));
+      await dispatch(dataSlice.actions.addCourses(courses));
+      await dispatch(userSlice.actions.changeLoginState());
 
-      useLoadingState(false);
+      await useLoadingState(false);
     }
     //# handle fail
     else {

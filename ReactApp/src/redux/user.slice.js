@@ -12,12 +12,10 @@ export default createSlice({
     changeLoginState: (state) => {
       state.loginState = !state.loginState;
     },
-    setTimeout: (date) => {
-      state.timeout = date;
-    },
-    setDataReview: (array) => {
-      state.dataReview = array;
-    },
+    setTimeout: (state, action) => {state.timeout = action.payload; },
+    // addLessons: (state, action) => {state.lessons = action.payload},
+
+    setDataReview: (state, action) => { state.dataReview = action.payload; },
 
 
     // clearJwt: state => {
