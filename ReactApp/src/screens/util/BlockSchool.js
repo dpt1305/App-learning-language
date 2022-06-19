@@ -75,7 +75,7 @@ export default function BlockSchool(props) {
               uri: words[indexWord].linkImage,
             }}
           />
-          <Text style={styles.meaning}>{words[indexWord].meaning}</Text>
+          <Text style={styles.meaning}>{words[indexWord].example}</Text>
         </View>
 
         {/* Back Side */}

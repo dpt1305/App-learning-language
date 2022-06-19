@@ -5,9 +5,9 @@ import IndicatorScreen from './../screens/util/IndicatorScreen';
 
 
 //# redux
-import { useSelector } from 'react-redux';
 import dataSlice from '../redux/data.slice';
 import { dataSelector } from '../redux/selector';
+import { useDispatch, useSelector } from 'react-redux';
 
 //# import get functions
 import {getCourses, getData, getLearnedLesson, getTimeout} from './../screens/authen/SignInScreen'
@@ -16,6 +16,7 @@ import config from '../config'
 import axios from 'axios';
 import { Constants } from '../Constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import userSlice from '../redux/user.slice';
 
 const window = Dimensions.get('window');
 
@@ -32,14 +33,15 @@ async function postLearnedwords(lessonId) {
   };
   return (await axios({
     url, 
-    data,
     method: 'post',
+    data,
     ...config
   })).data;
 }
 export default function SumaryScreen(props) {
   const [loadingState, useLoadingState] = useState(false);
-  
+  const dispatch = useDispatch();
+
   //# get all infor from redux
   const lessonId = useSelector(dataSelector).lessonId;
 
@@ -47,7 +49,7 @@ export default function SumaryScreen(props) {
     useLoadingState(true);
 
     //# create learnedwords API & get all info
-    await postLearnedwords(lessonId);
+    const result = await postLearnedwords(lessonId);
     
     let timeout = await getTimeout();
     let data =  await getData();
