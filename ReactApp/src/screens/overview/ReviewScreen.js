@@ -20,12 +20,16 @@ const window = Dimensions.get('window');
 
 export default function ReviewScreen(props) {
   const answers = [
-    {id: 1, choice: 'ha'},
-    {id: 2, choice: 'hi'},
+    {id: 1, choice: 'A. ha'},
+    {id: 2, choice: 'B. i'},
     {id: 3, choice: 'hb'},
     {id: 4, choice: 'hc'},
   ];
-  const renderItem =({item}) => <Text>{item.choice}</Text> 
+  const renderItem =({item}) => (
+    <TouchableOpacity style={styles.buttonMultipleChoice}>
+      <Text style={{fontSize: 28,}}>{item.choice}</Text> 
+    </TouchableOpacity>
+  );
   return (
     <SafeAreaView style={styles.container}>
       <BlockTopBar style={styles.topBar} navigation={props.navigation} />
@@ -38,7 +42,7 @@ export default function ReviewScreen(props) {
       </View>
 
       <View style={styles.multipleChoice}>
-        <FlatList
+        {/* <FlatList
           data={answers}
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}
@@ -48,7 +52,10 @@ export default function ReviewScreen(props) {
             marginLeft: "auto",
             marginRight: "auto",
           }}
-        />
+        /> */}
+        <TouchableOpacity style={styles.buttonMultipleChoice}>
+          <Text style={{fontSize: 28,}}>A</Text> 
+        </TouchableOpacity>
       </View>
 
       <View style={styles.buttonNextView}>
@@ -91,12 +98,23 @@ const styles = StyleSheet.create({
   multipleChoice: {
     flex: 5,
     borderColor: config.primary,
-    borderWidth: 2,
+    // borderWidth: 2,
     borderRadius: 20,
     marginRight: window.width/20,
     marginLeft: window.width/20,
+    marginTop: 30,
     justifyContent:'center',
     alignItems: 'center',
+  },
+  buttonMultipleChoice: {
+    borderColor: config.blockImage,
+    borderWidth: 3,
+    width: window.width/20*18,
+    height: window.height/20*1.3,
+    marginTop: 20,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonNextView: {
     flex: 1,

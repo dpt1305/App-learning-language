@@ -65,7 +65,7 @@ export default function CombinedScreen(props) {
   const indexWord = useSelector(indexWordSelector);
   const words = useSelector(wordsSelector);
   const loadingState = useSelector(loadingStateSelector);
-  // console.log(words1[indexWord]);
+  // console.log(words1[indexWord]);a
   
   //# initial for start session learn
   // useEffect(()=>{
