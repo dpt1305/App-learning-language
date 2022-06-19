@@ -27,6 +27,7 @@ import store from './src/redux/store';
 import {userRemaningSelector} from './src/redux/selector'
 import userSlice from "./src/redux/user.slice";
 import SumaryScreen from "./src/sumary/SumaryScreen";
+import ReviewScreen from "./src/screens/overview/ReviewScreen";
 // import { } from 'react-redux';
 
 const Stack = createStackNavigator();
@@ -65,8 +66,10 @@ export function App() {
           ) : (
             // <Stack.Screen name="BlockLearn" component={BlockLearn} />
             <Stack.Group>
+              <Stack.Screen name="Review" component={ReviewScreen} options={{ headerShown: false, gestureEnabled: false, }}
+              />
 
-              <Stack.Screen name="Home" component={Tabs} />
+              {/* <Stack.Screen name="Home" component={Tabs} />
               <Stack.Screen
                 name="School"
                 component={SchoolScreen}
@@ -84,7 +87,8 @@ export function App() {
                   gestureEnabled: false,
                 }}
               />
-              <Stack.Screen name="Sumary" component={SumaryScreen} />
+              <Stack.Screen name="Sumary" component={SumaryScreen} /> */}
+
             </Stack.Group>
           )}
         </Stack.Navigator>

@@ -45,6 +45,11 @@ export default function OverviewScreen() {
       },
     ],
   };
+
+  //# function go to review screen
+  const review = () => {
+    navigation.navigate("Type");
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.chartView}>
@@ -99,7 +104,6 @@ export default function OverviewScreen() {
 
       <View style={styles.countdown}>
         <CountDown
-          size={30}
           until={timeoutFromHandleTimeout}
           onFinish={() => setCountDone(true)}
           digitStyle={{
@@ -113,13 +117,14 @@ export default function OverviewScreen() {
           timeToShow={["D", "H", "M", "S"]}
           timeLabels={{ m: null, s: null }}
           showSeparator
+          size={30}
         />
       </View>
 
       <View style={styles.buttonNextView}>
         <TouchableOpacity
           style={countDone ? styles.buttonNext : styles.buttonNextDisable}
-          onPress={() => navigation.navigate("Type")}
+          onPress={() => review()}
           disabled={!countDone}
         >
           <Text style={{ fontSize: 34, padding: 20 }}>Review words...</Text>
