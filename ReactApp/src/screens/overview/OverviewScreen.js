@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import CountDown from "react-native-countdown-component";
 //redux 
@@ -15,27 +15,39 @@ import { useDispatch, useSelector } from "react-redux";
 import config from "../../config";
 import { userRemaningSelector, wordsSelector } from "../../redux/selector";
 
-function handleTimeout(date) {
-  if(date == null) {
-    return null;
-  }
-  const newDate = new Date(date);
-  const now = new Date();
-  const second = Math.ceil((newDate-now)/1000);
-  if(second > 0) {
-    return second;
-  } else {
-    return 0;
-  }
-}
+
 export default function OverviewScreen() {
   const [countDone, setCountDone] = useState(false);
+  const [time, setTime] = useState(0);
   const { width, height } = Dimensions.get("window");
 
   //# get time out
   const user = useSelector(userRemaningSelector);
-  const timeoutFromHandleTimeout = handleTimeout(user.timeout);
+  console.log(user);
 
+  const handleTimeout = (date) => {
+    if(date == null) {
+      return null;
+    }
+    const newDate = new Date(date);
+    const now = new Date();
+    const second = Math.ceil((newDate-now)/1000);
+    if(second > 0) {
+      return second;
+    } else {
+      return 0;
+    }
+  };
+  useEffect(() => {
+    setTime(handleTimeout(user.timeout));
+  },[])
+  // console.log('outside effect ', timeoutFromHandleTimeout);
+  
+  // useEffect(() => {
+  //   timeoutFromHandleTimeout = handleTimeout(user.timeout);
+  //   console.log('eeffect', timeoutFromHandleTimeout);
+  // }, [user.timeout]);
+  
   //# get data for report
   const data = {
     labels: ["0", "1", "2", "3", "4", "5"],
@@ -104,8 +116,9 @@ export default function OverviewScreen() {
 
       <View style={styles.countdown}>
         <CountDown
-          until={timeoutFromHandleTimeout}
+          until={time}
           onFinish={() => setCountDone(true)}
+          // onPress={timeoutFromHandleTimeout}
           digitStyle={{
             backgroundColor: "#FFF",
             borderWidth: 4,
@@ -123,9 +136,9 @@ export default function OverviewScreen() {
 
       <View style={styles.buttonNextView}>
         <TouchableOpacity
-          style={countDone ? styles.buttonNext : styles.buttonNextDisable}
+          style={(countDone && (timeoutFromHandleTimeout!= null)) ? styles.buttonNext : styles.buttonNextDisable}
           onPress={() => review()}
-          disabled={!countDone}
+          disabled={(countDone && (timeoutFromHandleTimeout!= null)) ? false : true}
         >
           <Text style={{ fontSize: 34, padding: 20 }}>Review words...</Text>
         </TouchableOpacity>
