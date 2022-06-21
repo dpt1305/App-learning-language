@@ -92,8 +92,9 @@ export default function OverviewScreen(props) {
     }
     
     await dispatch(dataSlice.actions.addWords(result));
+    await dispatch(dataSlice.actions.resetIndexWord());
     props.navigation.navigate("Review");
-    setLoadingState(true);
+    setLoadingState(false);
 
   }
 
@@ -158,7 +159,6 @@ export default function OverviewScreen(props) {
         <CountDown
           until={time}
           onFinish={() => setCountDone(true)}
-          // onPress={timeoutFromHandleTimeout}
           digitStyle={{
             backgroundColor: "#FFF",
             borderWidth: 4,

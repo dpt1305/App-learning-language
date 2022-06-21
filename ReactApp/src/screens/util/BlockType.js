@@ -19,12 +19,34 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { useSelector } from "react-redux";
 import { indexWordSelector, wordsSelector } from "../../redux/selector";
 
+export function ConvertWord(word) {
+  if(word.meaning) {
+    return word;
+  } else {
+    return {
+      learnedword_id: word.learnedword_id,
+      example: word.word_example,
+      id: word.word_id,
+      lessonId: word.word_lessonId,
+      linkAudio: word.word_linkAudio,
+      linkImage: word.word_linkImage,
+      meaning: word.word_meaning,
+      numberCharacter: word.word_numberCharacter,
+      placeholder: word.word_placeholder,
+      pronunciation: word.word_pronunciation,
+      type: word.word_type,
+      word: word.word_word,
+    }
+  }
+}
+
 export default function BlockType(props) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const words = useSelector(wordsSelector);
   const indexWord = useSelector(indexWordSelector);
-  const word = words[indexWord];
+  const word = ConvertWord(words[indexWord]);
+
   const createBackButtonAlert = () =>
     Alert.alert("Are you sure?", "If you quit, the process will be deleted.", [
       {
@@ -40,47 +62,25 @@ export default function BlockType(props) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Please fill in the word</Text>
-      <Text style={styles.meaning}>{words[indexWord].meaning}</Text>
+      <Text style={styles.meaning}>{word.meaning}</Text>
       {/* <ScrollView style={{flex: 5}}> */}
       <View style={styles.textInput}>
         <TextInput
           editable
-          maxLength={words[indexWord].numberCharacter}
+          maxLength={word.numberCharacter}
           style={styles.input}
           isFocused="true"
-          placeholder={words[indexWord].placeholder}
+          placeholder={word.placeholder}
           keyboardType="default"
-          // onSubmitEditing={Keyboard.dismiss}
-          // onPress={Keyboard.dismiss}
           onChangeText={(textInput) => {
-            if (textInput.length == words[indexWord].numberCharacter) {
+            const numberCharacter = word.numberCharacter;
+            if (textInput.length == numberCharacter) {
               props.setDisableButton(false);
               props.setTypeWord({ textInput: textInput.toLowerCase() });
             } else props.setDisableButton(true);
           }}
         />
       </View>
-      {/* <Button title="abc" onPress={() => setModalVisible(!modalVisible)} /> */}
-      {/* <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <SafeAreaView>
-          <Text>This is modal</Text>
-
-        </SafeAreaView>
-      </Modal> */}
-      {/* </ScrollView> */}
-
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset="10"
-      ></KeyboardAvoidingView> */}
     </SafeAreaView>
   );
 }

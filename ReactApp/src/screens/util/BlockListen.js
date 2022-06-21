@@ -18,6 +18,7 @@ import { Audio } from "expo-av";
 import * as stringSimilarity from "string-similarity";
 import { useSelector } from "react-redux";
 import { indexWordSelector, wordsSelector } from "../../redux/selector";
+import { ConvertWord } from "./BlockType";
 
 
 async function  playAudio(uri) {
@@ -32,6 +33,7 @@ export default function BlockListen(props) {
 
   const indexWord = useSelector(indexWordSelector);
   const words = useSelector(wordsSelector);
+  const word = ConvertWord(words[indexWord]);
 
   async function startRecording() {
     try {
@@ -114,7 +116,7 @@ export default function BlockListen(props) {
     xhr.onload = () => {
       const response = JSON.parse(xhr.response);
     
-      const compare = stringSimilarity.compareTwoStrings(response.data, words[indexWord].word );
+      const compare = stringSimilarity.compareTwoStrings(response.data, word.word );
       setPercent(`${(compare*100).toFixed(2)}%`);
       if( compare >= 0.6) { props.setDisableButton(false)}
 
@@ -137,8 +139,8 @@ export default function BlockListen(props) {
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Pronounce correctly</Text>
       <View style={styles.pronounce}>
-        <Text style={{ fontSize: 25 }}>{words[indexWord].word}{"\n"} {words[indexWord].pronunciation} </Text>
-        <TouchableOpacity onPress={() => playAudio(words[indexWord].linkAudio)} style={styles.button}>
+        <Text style={{ fontSize: 25 }}>{word.word}{"\n"} {word.pronunciation} </Text>
+        <TouchableOpacity onPress={() => playAudio(word.linkAudio)} style={styles.button}>
           <MaterialCommunityIcons name="volume-high" style={styles.speaker} />
         </TouchableOpacity>
       </View>

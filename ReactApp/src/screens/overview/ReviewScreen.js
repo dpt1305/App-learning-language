@@ -20,7 +20,14 @@ import BlockMultiple from '../util/BlockMultiple';
 const window = Dimensions.get('window');
 
 function RenderBlock() {
-  return <BlockMultiple/>
+  const random = Math.floor(Math.random() * 3);
+  if(random == 0) {
+    return <BlockMultiple/>;
+  }
+  if(random == 1) {
+    return <BlockType/>;
+  }
+  return <BlockListen/>;
 }
 
 export default function ReviewScreen(props) {
