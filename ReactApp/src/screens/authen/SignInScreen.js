@@ -25,10 +25,18 @@ import IndicatorScreen from './../util/IndicatorScreen';
 const window = Dimensions.get('window');
 
 async function loginUser(email, password) {
-  const url = `${Constants.URL_SERVER}/auth/signin`;
+  try {
+    const url = `${Constants.URL_SERVER}/auth/signin`;
 
-  const data = {email: email.toLowerCase(), password};
-  return await axios.post(url, data);
+    const data = {email: email.toLowerCase(), password};
+    return await axios.post(url, data);
+  } catch (error) {
+    return {
+      code: 400,
+      message: 'Fail',
+      data: "Error to sign in.",
+    };
+  }
 }
 export async function getCourses() {
   const url = `${Constants.URL_SERVER}/courses`;
@@ -103,7 +111,12 @@ export default function SignInScreen(props) {
     //# handle fail
     else {
       useLoadingState(false);
-      Alert.alert(`${res.data.data}`);
+      // console.log(res);
+      if(res.code == 400) {
+        Alert.alert(`${res.data}`);
+      } else {
+        Alert.alert(`${res.data.data}`);
+      }
     }
   }
 

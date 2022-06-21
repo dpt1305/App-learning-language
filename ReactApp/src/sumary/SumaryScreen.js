@@ -86,7 +86,7 @@ export default function SumaryScreen(props) {
               fontWeight: "bold",
             }}
           >
-            Let's get back to Overview.
+            Let's get back.
           </Text>
         </TouchableOpacity>
       </View>

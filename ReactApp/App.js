@@ -66,10 +66,9 @@ export function App() {
           ) : (
             // <Stack.Screen name="BlockLearn" component={BlockLearn} />
             <Stack.Group>
-              <Stack.Screen name="Review" component={ReviewScreen} options={{ headerShown: false, gestureEnabled: false, }}
-              />
+              
 
-              {/* <Stack.Screen name="Home" component={Tabs} />
+              <Stack.Screen name="Home" component={Tabs} />
               <Stack.Screen
                 name="School"
                 component={SchoolScreen}
@@ -87,8 +86,8 @@ export function App() {
                   gestureEnabled: false,
                 }}
               />
-              <Stack.Screen name="Sumary" component={SumaryScreen} /> */}
-
+              <Stack.Screen name="Sumary" component={SumaryScreen} />
+              <Stack.Screen name="Review" component={ReviewScreen} options={{ headerShown: false, gestureEnabled: false, }} />
             </Stack.Group>
           )}
         </Stack.Navigator>

@@ -37,14 +37,14 @@ export default function ReviewScreen(props) {
       </View>
 
       <View style={styles.buttonNextView}>
-          <TouchableOpacity
-            style={buttonState ? styles.buttonNext : styles.buttonNextDisable}
-            // style={disableButton ? styles.buttonNextDisable : styles.buttonNext}
-            disabled={!buttonState}
-            onPress={() => handleNextButton()}
-          >
-            <Text style={{ fontSize: 34, padding: 20 }}>Next</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={buttonState ? styles.buttonNext : styles.buttonNextDisable}
+          // style={disableButton ? styles.buttonNextDisable : styles.buttonNext}
+          disabled={!buttonState}
+          onPress={() => handleNextButton()}
+        >
+          <Text style={{ fontSize: 34, padding: 20 }}>Next</Text>
+        </TouchableOpacity>
         
       </View>
     </SafeAreaView>

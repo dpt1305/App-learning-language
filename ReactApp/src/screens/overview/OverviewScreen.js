@@ -5,25 +5,52 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import CountDown from "react-native-countdown-component";
 //redux 
 import { useDispatch, useSelector } from "react-redux";
-// configg
+import { dataSelector, userRemaningSelector, wordsSelector } from "../../redux/selector";
+import dataSlice from "../../redux/data.slice";
+// config
 import config from "../../config";
-import { userRemaningSelector, wordsSelector } from "../../redux/selector";
+import IndicatorScreen from "../util/IndicatorScreen";
+import { Constants } from "../../Constants";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from "axios";
 
 
-export default function OverviewScreen() {
+export async function getWordForReview() {
+  try {
+    const url = `${Constants.URL_SERVER}/learnedwords/word-for-review`;
+    const jwt = await AsyncStorage.getItem('acc_token');
+    let config = {
+      headers: {
+         Authorization: "Bearer " + jwt,
+      }
+    };
+    return (await axios.get(url, config)).data.data;
+  } catch (error) {
+    return {
+      code: 400,
+      message: 'Fail',
+      data: "Error to sign in.",
+    };
+  }
+}
+
+export default function OverviewScreen(props) {
+  //# use State
+  const [loadingState, setLoadingState] = useState(false);
   const [countDone, setCountDone] = useState(false);
   const [time, setTime] = useState(0);
   const { width, height } = Dimensions.get("window");
 
   //# get time out
   const user = useSelector(userRemaningSelector);
-  console.log(user);
+  const dispatch = useDispatch();
 
   const handleTimeout = (date) => {
     if(date == null) {
@@ -41,14 +68,7 @@ export default function OverviewScreen() {
   useEffect(() => {
     setTime(handleTimeout(user.timeout));
   },[])
-  // console.log('outside effect ', timeoutFromHandleTimeout);
-  
-  // useEffect(() => {
-  //   timeoutFromHandleTimeout = handleTimeout(user.timeout);
-  //   console.log('eeffect', timeoutFromHandleTimeout);
-  // }, [user.timeout]);
-  
-  //# get data for report
+
   const data = {
     labels: ["0", "1", "2", "3", "4", "5"],
     datasets: [
@@ -57,13 +77,33 @@ export default function OverviewScreen() {
       },
     ],
   };
+  
+  const data1 = useSelector(dataSelector);
+  const user1 = useSelector(userRemaningSelector);
 
   //# function go to review screen
-  const review = () => {
-    navigation.navigate("Type");
+  const review = async () => {
+    setLoadingState(true);
+
+    const result = await getWordForReview();
+    if(result.code == 400) {
+      setLoadingState(false);
+      return Alert.alert('Error');
+    }
+    
+    await dispatch(dataSlice.actions.addWords(result));
+    props.navigation.navigate("Review");
+    setLoadingState(true);
+
   }
+
   return (
-    <SafeAreaView style={styles.container}>
+    (loadingState) 
+    ? (
+      <IndicatorScreen/>
+    ) 
+    : (
+      <SafeAreaView style={styles.container}>
       <View style={styles.chartView}>
         <Text
           style={{
@@ -136,14 +176,16 @@ export default function OverviewScreen() {
 
       <View style={styles.buttonNextView}>
         <TouchableOpacity
-          style={(countDone && (timeoutFromHandleTimeout!= null)) ? styles.buttonNext : styles.buttonNextDisable}
+          style={(countDone && (time!= null)) ? styles.buttonNext : styles.buttonNextDisable}
           onPress={() => review()}
-          disabled={(countDone && (timeoutFromHandleTimeout!= null)) ? false : true}
+          disabled={(countDone && (time!= null)) ? false : true}
         >
           <Text style={{ fontSize: 34, padding: 20 }}>Review words...</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+    )
+    
   );
 }
 
