@@ -15,7 +15,7 @@ import userSlice from "../../redux/user.slice";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const user = {
-  email: "tungplatin@gmail.com",
+  email: "phutung99.kma@gmail.com",
   name: "Tùng Đỗ Phú",
   given_name: "Tùng",
   family_name: "Đỗ Phú",

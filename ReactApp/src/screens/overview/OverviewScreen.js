@@ -45,14 +45,10 @@ export default function OverviewScreen(props) {
   //# use State
   const [loadingState, setLoadingState] = useState(false);
   const [countDone, setCountDone] = useState(false);
-  const [time, setTime] = useState(0);
+
   const { width, height } = Dimensions.get("window");
-
-  //# get time out
-  const user = useSelector(userRemaningSelector);
-  const dispatch = useDispatch();
-
-  const handleTimeout = (date) => {
+  
+  const handleTimeout = function (date) {
     if(date == null) {
       return null;
     }
@@ -60,14 +56,33 @@ export default function OverviewScreen(props) {
     const now = new Date();
     const second = Math.ceil((newDate-now)/1000);
     if(second > 0) {
-      return second;
+      return second+1;
     } else {
-      return 0;
+      return 0+1; 
     }
   };
+  //# get time out
+  const dispatch = useDispatch();
+  const user = useSelector(userRemaningSelector);
+  let timeForSet = handleTimeout(user.timeout);
+  const [time, setTime] = useState(timeForSet);
+  
+  //# fix time 
+  const [countDownId, setCountDownId] = useState(undefined)
   useEffect(() => {
     setTime(handleTimeout(user.timeout));
-  },[])
+    console.log('effect', time);
+  }, [user.timeout]);
+  useEffect(() => {
+    // Generate new id based on unix timestamp (string)
+    const id = new Date().getTime().toString();
+    // Set id to state
+    setCountDownId(id);
+    console.log(id, countDownId);
+  }, [time])
+  console.log('user.timeout', user.timeout, 'time', time);
+  console.log('count down', countDone);
+
 
   const data = {
     labels: ["0", "1", "2", "3", "4", "5"],
@@ -157,8 +172,15 @@ export default function OverviewScreen(props) {
 
       <View style={styles.countdown}>
         <CountDown
+          id={countDownId}
           until={time}
-          onFinish={() => setCountDone(true)}
+          lastUntil={time}
+          onFinish={
+            // () => setTime(0)
+            () => {
+              if(time == 0) setCountDone(true);
+            }
+          }
           digitStyle={{
             backgroundColor: "#FFF",
             borderWidth: 4,
@@ -176,7 +198,7 @@ export default function OverviewScreen(props) {
 
       <View style={styles.buttonNextView}>
         <TouchableOpacity
-          style={(countDone && (time!= null)) ? styles.buttonNext : styles.buttonNextDisable}
+          style={( countDone && (time!= null)) ? styles.buttonNext : styles.buttonNextDisable}
           onPress={() => review()}
           disabled={(countDone && (time!= null)) ? false : true}
         >

@@ -94,17 +94,23 @@ export default function SignInScreen(props) {
     //# handle success
     if(res.data.message == 'Success') {
       await AsyncStorage.setItem('acc_token', res.data.data.toString());
-      let courses = await getCourses();
-      let timeout = await getTimeout();
-      const data =  await getData();
-      const learnedLesson = await getLearnedLesson();
+      let [courses, timeout, data, learnedLesson] = await Promise.all([
+        getCourses(),
+        getTimeout(),
+        getData(),
+        getLearnedLesson(),
+      ]);
+      // let  = await ;
+      // let timeout = await ;
+      // const data =  await ;
+      // const learnedLesson = await ;
 
-      await dispatch(userSlice.actions.setTimeout(timeout));
       await dispatch(dataSlice.actions.addCourses(courses));
-      await dispatch(userSlice.actions.changeLoginState());
+      await dispatch(userSlice.actions.setTimeout(timeout));
       await dispatch(userSlice.actions.setDataReview(data));
       await dispatch(userSlice.actions.setLearnedLesson(learnedLesson));
-      await dispatch(dataSlice.actions.resetLoadingState());
+      // await dispatch(dataSlice.actions.resetLoadingState());
+      await dispatch(userSlice.actions.changeLoginState());
 
       await useLoadingState(false);
     }
@@ -148,7 +154,7 @@ export default function SignInScreen(props) {
           keyboardType="default"
           placeholder="Password"
           secureTextEntry={true}
-          onChangeText={(text) => {setPassword(text); console.log(text)}}
+          onChangeText={(text) => {setPassword(text); }}
         />
         <TouchableOpacity>
           <Text style={{ fontSize: 20, color: config.primary }}>

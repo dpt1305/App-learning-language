@@ -19,35 +19,94 @@ import BlockMultiple from '../util/BlockMultiple';
 
 const window = Dimensions.get('window');
 
-function RenderBlock() {
-  const random = Math.floor(Math.random() * 3);
-  if(random == 0) {
-    return <BlockMultiple/>;
-  }
-  if(random == 1) {
-    return <BlockType/>;
-  }
-  return <BlockListen/>;
-}
-
 export default function ReviewScreen(props) {
+  const [disableButton, setDisableButton] = useState(true);
+  const [typeWord, setTypeWord] = useState({ textInput: ""});
+
   //# get data from redux
+  const dispatch = useDispatch();
   const buttonState = useSelector(buttonStateSelector);
+  const words = useSelector(wordsSelector);
+  const indexWord = useSelector(indexWordSelector);
+  const count1 = useSelector(countSelector);
+
+  function RenderBlock(props) {
+    const random = Math.floor(Math.random() * 1);
+    // const random = 1;
+
+    // useEffect(async() => {
+    //   await dispatch(dataSlice.actions.setCount(random));
+    // }, []);
+
+    if(random == 0) {
+      return <BlockMultiple
+      setDisableButton={props.setDisableButton}
+      />;
+    }
+    // if(random == 1) {
+    //   // dispatch(dataSlice.actions.setCount(1));
+    //   return <BlockType
+    //     setDisableButton={props.setDisableButton}
+    //     setTypeWord={props.setTypeWord}
+    //   />;
+    // }
+    // dispatch(dataSlice.actions.setCount(2));
+    return <BlockListen
+      setDisableButton={props.setDisableButton}
+      />;
+  }
+  async function handleNextButton() {
+    if(count1%3 == 1 && typeWord.textInput == words[indexWord].word){
+      Alert.alert(
+        "Correct",
+        `${words[indexWord].word}: ${words[indexWord].meaning}`,
+        
+          { text: "OK", onPress: () =>{
+            // setCount(count1 + 1);
+            dispatch(dataSlice.actions.addCount());
+
+            setDisableButton(true);
+          } },
+      );
+    }
+    if(count1%3 == 1 && typeWord.textInput != words[indexWord].word) {
+      Alert.alert("Incorrect", `${words[indexWord].word}: ${words[indexWord].meaning}`, [
+        {
+          text: "OK",
+          onPress: () => {
+
+            setDisableButton(true);
+          },
+        },
+      ]);
+    }
+    else {
+      // setCount(count1+1);
+      // await dispatch(dataSlice.actions.addCount());
+      setDisableButton(true);
+      if((count1)%3 == 2 && (count1) !=0) {
+        dispatch(dataSlice.actions.addIndexWord())
+      }
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <BlockTopBar style={styles.topBar} navigation={props.navigation} />
 
       <View style={styles.viewBlock}>
-        <RenderBlock/>
+        <RenderBlock 
+          setDisableButton={setDisableButton}
+          setTypeWord={setTypeWord}
+        />
 
       </View>
 
       <View style={styles.buttonNextView}>
         <TouchableOpacity
-          style={buttonState ? styles.buttonNext : styles.buttonNextDisable}
+          style={!disableButton ? styles.buttonNext : styles.buttonNextDisable}
           // style={disableButton ? styles.buttonNextDisable : styles.buttonNext}
-          disabled={!buttonState}
+          disabled={disableButton}
           onPress={() => handleNextButton()}
         >
           <Text style={{ fontSize: 34, padding: 20 }}>Next</Text>

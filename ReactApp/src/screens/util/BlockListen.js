@@ -20,7 +20,6 @@ import { useSelector } from "react-redux";
 import { indexWordSelector, wordsSelector } from "../../redux/selector";
 import { ConvertWord } from "./BlockType";
 
-
 async function  playAudio(uri) {
   const { sound } = await Audio.Sound.createAsync({uri});
   console.log('Playing');

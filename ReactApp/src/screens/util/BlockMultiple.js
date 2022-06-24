@@ -3,6 +3,9 @@ import React from 'react'
 //# config
 import config from '../../config'
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import dataSlice from '../../redux/data.slice';
+import { indexWordSelector, wordsSelector } from '../../redux/selector';
 
 const window = Dimensions.get('window');
 
@@ -21,24 +24,30 @@ function Answer(props) {
         // console.log(props.answer);
       }}
     >
-      <Text style={{fontSize: 20,}}>{props.answer.choice}</Text> 
+      <Text style={{fontSize: 20,}}>{props.answer.word_meaning}</Text> 
     </TouchableOpacity>
   )
 }
 
 export default function BlockMultiple() {
   //# data for answers
-  const answers = [
-    {id: 1, word: 'learn', choice: 'Study or something likes that.'},
-    {id: 2, word: 'student', choice: 'HA'},
-    {id: 3, word: 'school', choice: 'hb'},
-    {id: 4, word: 'lion', choice: 'hc'},
-  ];
+  // const answers = [
+  //   {id: 1, word: 'learn', choice: 'Study or something likes that.'},
+  //   {id: 2, word: 'student', choice: 'HA'},
+  //   {id: 3, word: 'school', choice: 'hb'},
+  //   {id: 4, word: 'lion', choice: 'hc'},
+  // ];
+  
   //# exact word
-  const word = {
-    word: 'learn',
-    meaning: 'Study or something likes that.'
-  };
+  const words = useSelector(wordsSelector);
+  const indexWord = useSelector(indexWordSelector);
+  // console.log(words, indexWord);
+  const word = words[indexWord];
+  console.log(word);
+
+  //# answer
+  const answers = [ word, words[indexWord+1], words[indexWord+2], words[indexWord+3]];
+
   //# useState
   const [modalVisible, setModalVisible] = useState(true);
 
